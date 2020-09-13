@@ -1,0 +1,92 @@
+###BOTTLING### applywinetricks.sh
+###BOTTLING### Gathering debug Info...
+
+Versions
+OS...........................: darwin18
+Wine.........................: 1.8.6
+WineBottler..................: 1.8.6
+Wineticks....................: 20200412-next - sha256sum: d77d229b64e1acebc0f5f2944d37d9670d77481c393a1c3811f447d7e322ded4
+
+Environment
+PWD..........................: '/Applications/Wine.app/Contents/Resources/bin'
+PATH.........................: /Applications/Wine.app/Contents/Resources/bin:/usr/bin:/bin:/usr/sbin:/sbin
+USER.........................: lucatranfaglia
+HOME.........................: /Users/lucatranfaglia
+COMPUTERNAME.................: Lucky
+BUNDLERESOURCEPATH...........: /Applications/Wine.app/Contents/Frameworks/WBottler.framework/Resources
+WINEPREFIX...................: /Applications/Wine.app/Contents/Resources
+WINEPATH.....................: /Applications/Wine.app/Contents/Resources/bin
+LD_LIBRARY_PATH..............: /Applications/Wine.app/Contents/Resources/lib:/opt/X11/lib:/usr/X11/lib
+DYLD_FALLBACK_LIBRARY_PATH...: /Applications/Wine.app/Contents/Resources/lib:/usr/lib:/opt/X11/lib:/usr/X11/lib
+SILENT.......................: 
+http_proxy...................: 
+https_proxy..................: 
+ftp_proxy....................: 
+socks5_proxy.................: 
+
+Bottle
+TEMPLATE.....................: 
+BOTTLE.......................: /Users/lucatranfaglia/Wine Files
+INSTALLER_URL................: 
+INSTALLER_IS_ZIPPED..........: 0
+INSTALLER_NAME...............: 
+INSTALLER_ARGUMENTS..........: 
+REMOVE_MONO..................: 
+REMOVE_GECKO.................: 
+REMOVE_USERS.................: 
+REMOVE_INSTALLERS............: 
+WINETRICKS_ITEMS.............:  win7
+DLL_OVERRIDES................: 
+EXECUTABLE_PATH..............: notneeded
+EXECUTABLE_ARGUMENTS.........: 
+EXECUTABLE_VERSION...........: 1.0.0
+BUNDLE_COPYRIGHT.............: 
+BUNDLE_IDENTIFIER............: org.kronenberg.winebottler
+BUNDLE_CATEGORYTYPE..........: public.app-category.utilities
+SILENT.......................: 
+
+Hardware:
+
+    Hardware Overview:
+
+      Model Name: MacBook Pro
+      Model Identifier: MacBookPro9,2
+      Processor Name: Intel Core i7
+      Processor Speed: 2,9 GHz
+      Number of Processors: 1
+      Total Number of Cores: 2
+      L2 Cache (per Core): 256 KB
+      L3 Cache: 4 MB
+      Hyper-Threading Technology: Enabled
+      Memory: 8 GB
+      Boot ROM Version: 228.0.0.0.0
+      SMC Version (system): 2.2f44
+      Serial Number (system): C02JR411DTY4
+      Hardware UUID: 051E7F88-61A7-5F9D-80A4-5307763EE9E2
+      Sudden Motion Sensor:
+          State: Enabled
+
+###BOTTLING### installing win7
+ls: /private/tmp/winebottler_1599593860/nospace/wineprefix/drive_c: No such file or directory
+grep: /private/tmp/winebottler_1599593860/nospace/wineprefix/*.reg: No such file or directory
+### LOG ### Command 'source /private/tmp/winebottler_1599593860/nospace/winetricks.sh --no-isolate win7' returned status 1.
+
+warning: taskset/cpuset not available on your platform!
+------------------------------------------------------
+Your version of wine 1.8.6 is no longer supported upstream. You should upgrade to 4.x
+------------------------------------------------------
+Executing mkdir -p /private/tmp/winebottler_1599593860/nospace
+------------------------------------------------------
+WINEPREFIX INFO:
+Drive C: 
+
+Registry info:
+/private/tmp/winebottler_1599593860/nospace/wineprefix/*.reg:
+------------------------------------------------------
+------------------------------------------------------
+/private/tmp/winebottler_1599593860/nospace/wine cmd.exe /c echo '%AppData%' returned empty string, error message "wine: chdir to /private/tmp/winebottler_1599593860/nospace/wineprefix
+ : No such file or directory" 
+------------------------------------------------------
+
+###ERROR### Command 'source /private/tmp/winebottler_1599593860/nospace/winetricks.sh --no-isolate win7' returned status 1.
+Task returned with status 1.
