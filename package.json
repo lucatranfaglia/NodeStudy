@@ -1,0 +1,25 @@
+{
+    "name": "nodestudy",
+    "version": "1.0.0",
+    "description": "Live Server",
+    "main": "index.js",
+    "scripts": {
+        "start": "node server.js",
+        "test": "echo \"Error: no test specified\" && exit 1",
+        "dev": "nodemon server.js"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/lucatranfaglia/NodeStudy.git"
+    },
+    "author": "Luca Tranfaglia",
+    "license": "ISC",
+    "bugs": {
+        "url": "https://github.com/lucatranfaglia/NodeStudy/issues"
+    },
+    "homepage": "https://github.com/lucatranfaglia/NodeStudy#readme",
+    "devDependencies": {
+        "lodash": "^4.17.20",
+        "nodemon": "^2.0.4"
+    }
+}
