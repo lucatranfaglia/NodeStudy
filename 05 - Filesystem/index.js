@@ -1,24 +1,17 @@
-const fs = require('fs');
 const configs = require('./config');
+const write = require('./writeFile');
+const read = require('./readFile');
 
 const data = JSON.stringify(configs.config);
+const encoding = "utf8";
+
+const path = "./config.json";
+const path2 = "./config2.json";
 
 
-const path = "./test.js";
-const path2 = "./test2.js";
 
-// Scrittura ASincrona - writeFile(pat, data, option, callback)
-fs.writeFile(path, data, { encodign: "ut-8" }, (err) => {
-    if (err) {
-        console.log("Error", err);
-    } else {
-        console.log("Create File");
-    }
-});
+write.writeFileAsyn(path, data, encoding);
+write.writeFileSyn(path2, data, encoding);
 
-console.log("After file creation 1");
-
-// Scrittura ASincrona - writeFile(pat, data, option)
-fs.writeFileSync(path2, data, { encodign: "ut-8" });
-
-console.log("After file creation 2");
+// 
+read.readFileAsyn('.', path, encoding);
