@@ -1,1 +1,0 @@
-quando si converte una variabile in JSON.parse, usare sempre il TRY e CATCH perché il server che si aspetta un json si romperebbe se non avviene la conversione.
