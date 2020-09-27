@@ -1,4 +1,5 @@
-function processResponse(res) {
+function processResponse(res, write) {
+    // salva il risultato tramite pipe su write (weather.json)
     res.pipe(write);
     // visualizza la callback in console
     res.pipe(process.stdout);

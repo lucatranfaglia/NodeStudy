@@ -22,7 +22,7 @@ try {
         const error = STATUS_CODE[status];
         switch (status) {
             case 200:
-                processResponse(res);
+                processResponse(res, write);
                 break;
             default:
                 errorResponse(status, error);
