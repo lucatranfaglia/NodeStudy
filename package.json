@@ -21,5 +21,8 @@
     "devDependencies": {
         "lodash": "^4.17.20",
         "nodemon": "^2.0.4"
+    },
+    "dependencies": {
+        "axios": "^0.20.0"
     }
 }

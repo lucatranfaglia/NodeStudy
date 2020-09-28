@@ -10,9 +10,6 @@ if (v_amb.error) {
 const { parsed: envs } = v_amb;
 
 
-
-console.log("v_amb: ", envs)
-
 // const weather_url = process.env.URL;
 // const appid = process.env.APPID;
 const appid = envs.APPID;
