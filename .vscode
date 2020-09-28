@@ -1,0 +1,11 @@
+{
+    "files.autoSave": "off",
+    "liveServer.settings.donotShowInfoMsg": true,
+    "editor.find.autoFindInSelection": "always",
+    "[search-result]": {
+
+        "editor.lineNumbers": "off"
+    },
+    "editor.cursorSurroundingLinesStyle": "all",
+
+}
