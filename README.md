@@ -1,15 +1,17 @@
-# plugin vs studio code
+# Plugin vs studio code
 Live Server
 
+# OpenWeatherMap (API)
+https://home.openweathermap.org/
+cose.grandi // S89
 
-# install Node with NVM
+# Install Node with NVM
 https://github.com/nvm-sh/nvm
 
 nvm install --lts (installa l'ultima versione LTS - Long Term Support)
 nvm use 12 (versione che si vuole usare)
 
-
-# PACKAGE (https://docs.npmjs.com/files/package.json)
+# Package (https://docs.npmjs.com/files/package.json)
 
 # The semantic versioner for npm (https://docs.npmjs.com/misc/semver.html)
 per verificare il tipo di versione da acquisire andare su npm->semver
@@ -31,5 +33,4 @@ tilde: permette di aggiorna
 
 # librerie LODASH 
 manipolare oggetti o array o collection
-
 npm update lodash
