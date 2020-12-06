@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <meta charset="UTF-8">
+    <title>WEATHER API</title>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<div class="container-fluid">
+    <h1  class="text-center">WHAT'S THE WEATHER LIKE TODAY?</h1>
+    <form onsubmit="searchWeather(this); return false;">
+        <div class="form-group">
+            <label for="country_code">COUNTRY</label>
+            <select class="form-control" name="country_code" id="country_code">
+                <option value="">SELECT</option>
+            </select>
+        </div>
+       <div class="form-group">
+        <label for="city">CITY</label>
+        <input class="form-control" name="city" id="city">
+    </div>
+        <div class="form-group">
+            <label for="zip">POST CODE</label>
+            <input class="form-control" name="zip" id="zip">
+        </div>
+        <div class="form-group text-center">
+            <button class="btn btn-success">SEARCH</button>
+        </div>
+    </form>
+</div>
+<table id="response" class="table table-dark">
+    <tr>
+        <th>CITY</th>
+        <th>WEATHER</th>
+        <th>TEMPERATURE</th>
+        <th>MIN</th>
+        <th>MAX</th>
+    </tr>
+    <tr>
+        <td id="cityname"></td>
+        <td id="weather"></td>
+        <td  id="temp"></td>
+        <td  id="min-temp"></td>
+        <td  id="max-temp"></td>
+    </tr>
+</table>
+</body>
+
+<script type="text/javascript" src="./js/index.js"></script>
+</html>
