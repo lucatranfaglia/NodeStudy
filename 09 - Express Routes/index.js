@@ -1,7 +1,11 @@
 const logger = require('morgan');
 const express = require('express');
-const todosRoutes = require('./routes/todos');
-const listsRoutes = require('./routes/lists');
+// route per data.json
+// const todosRoutes = require('./routes/todos');
+// const listsRoutes = require('./routes/lists');
+
+const todosRoutes = require('./routes/todos_db');
+const listsRoutes = require('./routes/lists_db');
 
 
 // creo un'istanza di express

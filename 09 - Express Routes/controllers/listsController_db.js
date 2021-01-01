@@ -3,54 +3,62 @@ let {pool} = require("../db");
 
 // ritorna tutti i list
 async function getLists(){
-    // return data.lists;
-    
     const [result, ] = await pool.query("SELECT * FROM lists");  // return Promise [results, fields]
     return result;
 }
 // ritorna i list con filtro
 async function getListById(account_id){    
-    // return data.lists.find((list)=>{
-    //     return list.id === parseInt(account_id);
-    // });
+    if(account_id){
+        const [result, ] = await pool.query("SELECT * FROM lists WHERE id=?",[account_id]);  // return Promise [results, fields]
+
+        // return singola lista == result[0]
+        return result[0];
+    }
+    return [];
 }
 
 // rimuove un list con filtro
-function deleteListById(account_id){
-    const idx = data.lists.findIndex((List)=>{
-        return List.id === parseInt(account_id);
-    });
-
-    if(idx>-1){
-        // ritorniamo l'elemento rimosso
-        const el = data.lists.slice(idx, 1)
-        return el;
+async function deleteListById(account_id){
+    if(account_id){
+        const [result, ] = await pool.query("DELETE FROM lists WHERE id=?",[account_id]);  // return Promise [results, fields]
+        return result;    
     }
-    return 0;
+    return [];
 }
 
-function addList(name){
-    // id è il numero di elementi nelle lissta +1
-    const id = data.lists.length+1;
-    const list = {name, id:id}
-    // inserimento in testa dell'elemento nell'array e ritorna la nuova lunghezza dell'array
-    data.lists.unshift(list);
-    return newList;
+async function addList(name){
+    if(name){
+        const user_id=1;
+        const query = "INSERT INTO lists (name, user_id) VALUES (?, ?)";
+        const [result, ] = await pool.query(query,[name, user_id]);  // return Promise [results, fields]
+        
+        // return 
+        // result => {
+        //     "fieldCount": 0,
+        //     "affectedRows": 1,
+        //     "insertId": 6,
+        //     "info": "",
+        //     "serverStatus": 2,
+        //     "warningStatus": 0
+        // }
+
+
+        // return la lista appena inserita
+        const list = await getListById(result.insertId)
+        return list;
+    }
+    return [];
 }
 
-function updateList(account_id, name){
-    // cerco l'id nel db
-    const idx = data.lists.findIndex((List)=>{
-        return List.id === parseInt(account_id);
-    });
+async function updateList(account_id, name){
+    if(account_id && name){
 
-    
-    if(idx !== -1) {
-        // modifico 
-        return data.lists[idx] = { ...data.lists[idx], name};
+        const [result, ] = await pool.query("UPDATE lists SET name=? WHERE id=?",[name, account_id]);  // return Promise [results, fields]
+        
+        const list = await getListById(account_id);        
+        return list;
     }
-
-    return false;
+    return [];
 }
 
 module.exports = {

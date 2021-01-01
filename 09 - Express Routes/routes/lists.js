@@ -3,8 +3,8 @@ const express = require('express');
 // creo un'istanza di express
 const router = express.Router();
 
-// controller
-const {getLists, getListById, deleteListById, addList, updateList} = require('../controllers/ListsController');
+// controller con data.json
+const {getLists, getListById, deleteListById, addList, updateList} = require('../controllers/listsController');
 
 // MIDDLEWARE
 const logger = (req, res, next) => {
