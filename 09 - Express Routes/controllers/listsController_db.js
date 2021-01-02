@@ -1,4 +1,3 @@
-const data = require("../data.json");
 let {pool} = require("../db");
 
 // ritorna tutti i list

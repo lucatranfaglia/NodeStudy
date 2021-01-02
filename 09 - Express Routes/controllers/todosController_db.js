@@ -1,51 +1,70 @@
-const data = require("../data.json");
-
+let {pool} = require("../db");
 
 // ritorna tutti i todo
-function getTodos(){
-    return data.todos;
+async function getTodos(){
+    const [result, ] = await pool.query("SELECT * FROM todos");  // return Promise [results, fields]
+    console.log("RESULT: ", result)
+    return result;
 }
 // ritorna i todo con filtro
-function getTodoById(account_id){
-    
-    return data.todos.find((todo)=>{
-        return todo.id === parseInt(account_id);
-    });
+async function getTodoById(account_id){
+    if(account_id){
+        const [result, ] = await pool.query("SELECT * FROM todos WHERE id=?",[account_id]);  // return Promise [results, fields]
+
+        // return singola lista == result[0]
+        return result[0];
+    }
+    return [];
 }
 
 // rimuove un todo con filtro
-function deleteTodoById(account_id){
-    const idx = data.todos.findIndex((todo)=>{
-        return todo.id === parseInt(account_id);
-    });
-
-    if(idx>-1){
-        // ritorniamo l'elemento rimosso
-        const el = data.todos.slice(idx, 1)
-        return el;
+async function deleteTodoById(account_id){
+    if(account_id){
+        const [result, ] = await pool.query("DELETE FROM todos WHERE id=?",[account_id]);  // return Promise [results, fields]
+        // numero di righe cancellate
+        return result.affectedRows;    
     }
-    return false;
+    return [];
 }
 
-function addTodo({todo, completed, list}){
-    const newTodo = {todo, completed, list};
+async function addTodo({todo, completed, list_id}){
+    const newTodo = {todo, completed, list_id};
+    if(newTodo){
+        completed = completed || 0;
+        const query = "INSERT INTO todos (todo, completed, list_id) VALUES (?, ?, ?)";
+        const [result, ] = await pool.query(query,[todo, completed, list_id]);  // return Promise [results, fields]
+        
+        // return 
+        // result => {
+        //     "fieldCount": 0,
+        //     "affectedRows": 1,
+        //     "insertId": 6,
+        //     "info": "",
+        //     "serverStatus": 2,
+        //     "warningStatus": 0
+        // }
 
-    // inserimento dell'elemento alla fine dell'array e ritorna la nuova lunghezza dell'array
-    // data.todos.push({ todo, completed, lisst });
+        
 
-    // inserimento in testa dell'elemento nell'array e ritorna la nuova lunghezza dell'array
-    data.todos.unshift(newTodo);
-    return newTodo;
+        // return la lista appena inserita
+        const post = await getTodoById(result.insertId)
+        return post;
+    }
+    return [];
 }
 
-function updateTodo(id, newTodo){
-    const idx = data.todos.findIndex(todo=> todo.id === parseInt(account_id));
+async function updateTodo(account_id, {todo, completed, list_id}){
+    const newTodo = {todo, completed, list_id};
+    if(account_id && newTodo){
+        completed = completed || 0;
+        const [result, ] = await pool.query("UPDATE todos SET todo=?, list_id=?, completed=? WHERE id=?",[todo,list_id,completed, account_id]);  // return Promise [results, fields]
+        
+        console.log("update result: ", result);
 
-    if(idx>-1){
-        // aggiorno i dati
-        return data.todos[idx]= {...data.todos[idx], ...newTodo};
+        const todos = await getTodoById(account_id);        
+        return todos;
     }
-    return false;
+    return [];
 }
 
 module.exports = {

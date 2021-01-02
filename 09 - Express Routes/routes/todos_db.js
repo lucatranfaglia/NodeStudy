@@ -4,51 +4,77 @@ const express = require('express');
 const router = express.Router();
 
 // controller
-const {getTodos, getTodoById, deleteTodoById, addTodo, updateTodo} = require('../controllers/todosController');
+const {getTodos, getTodoById, deleteTodoById, addTodo, updateTodo} = require('../controllers/todosController_db');
 
 // MIDDLEWARE
-const logger = (req, res, next) => {
+const logger = async (req, res, next) => {
     console.log('calling server with params', req.params);
     next();
 }
 
-router.get('/', (req, res)=>{
-    const result = getTodos();
-    res.json(result ? 200 : 404).json(result ? result : null);
+router.get('/', async (req, res)=>{
+    try {
+        const result = await getTodos();
+        console.log(result);
+        // TODO: error res.status
+        // res.status(200).json(result ? result : null);    
+        res.status(result ? 200 : 404).json( result ? result : null);
+    } 
+    catch (error) {
+        res.status(500).send(error.toString());
+    }
 })
 
 // parametro 'id' , middleware (logger), middleware
-router.get('/:id([0-9]+)', logger, (req, res)=>{
-    const id = req.params.id;
-
-    const result = getTodoById(id);
-    res.json(result ? 200 : 404).json( result ? result : null);
+router.get('/:id([0-9]+)', logger, async (req, res)=>{
+    try{
+        const id = req.params.id;
+        const result = await getTodoById(id);
+        res.status(result ? 200 : 404).json( result ? result : null);
+        // TODO: error res.status
+        // res.json(200).json( result ? result : null);
+    } 
+    catch (error) {
+        res.status(500).send(error.toString());
+    }
 })
 
 // Cancello un id
-router.delete('/:id([0-9]+)', logger, (req, res) =>{
-    const deleted = req.params.id;
-    res.status( deleted ? 200 : 404).json( deleted ? deleteTodoById(id): null)
+router.delete('/:id([0-9]+)', logger, async (req, res) =>{
+    try{
+        const id = req.params.id;
+        const deleted = await deleteTodoById(id)
+        res.status( deleted ? 200 : 404).json( deleted ? deleted: null)
+    } 
+    catch (error) {
+        res.status(500).send(error.toString());
+    }
 })
 
 // Creo una nuova risorsa
-router.post('/', (req, res)=>{    
-    // passo tutti i parametri alla funzione
-    const result = addTodo(req.body);
-    res.status(result ? 200 : 404).json( result ? result : null);
+router.post('/', async (req, res)=>{    
+    try {
+        console.log("post result: ", req.body);
+
+        // passo tutti i parametri alla funzione
+        const result = await addTodo(req.body);
+        res.status(result ? 200 : 404).json( result ? result : null);
+    } 
+    catch (error) {
+        res.status(500).send(error.toString());
+    }
 })
 
 // Creo una nuova risorsa
-router.patch('/:id([0-9]+)', (req, res)=>{    
-    // passo l'ID del profilo da modificare, e tutti i parametri nel body
-    const updTodo = updateTodo(req.params.id, req.body);
-    res.status(upate ? 200 : 404).json(updTodo ? updTodo : 'Record not found');
+router.patch('/:id([0-9]+)', async (req, res)=>{    
+    try{
+        // passo l'ID del profilo da modificare, e tutti i parametri nel body
+        const updTodo = await updateTodo(req.params.id, req.body);
+        res.status(updTodo ? 200 : 404).json(updTodo ? updTodo : 'Record not found');
+    } 
+    catch (error) {
+        res.status(500).send(error.toString());
+    }
 })
-
-// array di middleware
-// router.get('/:id([0-9]+)', [logger, (req, res)=>{
-//     const id = req.params.id;
-//     res.send('todos with id'+ id);
-// }])
 
 module.exports = router;
