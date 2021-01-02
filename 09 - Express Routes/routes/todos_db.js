@@ -4,7 +4,7 @@ const express = require('express');
 const router = express.Router();
 
 // controller
-const {getTodos, getTodoById, deleteTodoById, addTodo, updateTodo} = require('../controllers/todosController_db');
+const {getTodos, getTodoById, getTodosByListId, deleteTodoById, addTodo, updateTodo} = require('../controllers/todosController_db');
 
 // MIDDLEWARE
 const logger = async (req, res, next) => {
@@ -34,6 +34,18 @@ router.get('/:id([0-9]+)', logger, async (req, res)=>{
         // TODO: error res.status
         // res.json(200).json( result ? result : null);
     } 
+    catch (error) {
+        res.status(500).send(error.toString());
+    }
+})
+
+// Ottengo i todo tramite una lista (list_id) - parametro 'list_id' , middleware (logger), middleware
+router.get('/list_id/:list_id([0-9]+)', logger, async (req, res)=>{
+    try {
+        const list_id = req.params.list_id;
+        const result = await getTodosByListId(list_id);
+        res.status(result ? 200 : 404).json(result ? result : "List not found!");
+    }
     catch (error) {
         res.status(500).send(error.toString());
     }

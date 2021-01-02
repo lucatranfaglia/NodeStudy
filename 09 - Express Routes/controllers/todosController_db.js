@@ -17,6 +17,17 @@ async function getTodoById(account_id){
     return [];
 }
 
+// ritorna tutti i todo che hanno la lista_id
+async function getTodosByListId(list_id){
+    if(list_id){
+        const [result, ] = await pool.query("SELECT * FROM todos WHERE list_id=?",[list_id]);  // return Promise [results, fields]
+        
+        // return singola lista == result[0]
+        return result;
+    }
+    return [];
+}
+
 // rimuove un todo con filtro
 async function deleteTodoById(account_id){
     if(account_id){
@@ -70,6 +81,7 @@ async function updateTodo(account_id, {todo, completed, list_id}){
 module.exports = {
     getTodos,
     getTodoById,
+    getTodosByListId,
     deleteTodoById,
     addTodo,
     updateTodo
