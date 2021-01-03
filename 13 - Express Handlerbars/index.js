@@ -10,6 +10,9 @@ const listsRoutes = require('./routes/lists');
 // creo un'istanza di express
 const app = express();
 
+// Engine
+app.engine('.hbs', ehb());
+app.set('view engine', '.hbs');
 
 // HTTP request logger middleware for node.js
 app.use(logger('dev'));
