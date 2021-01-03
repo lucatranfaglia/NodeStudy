@@ -1,81 +1,98 @@
-let {pool} = require("../db");
+const Todo = require('../models').Todo;
+
+// colonne che si voglio visualizzare
+const attributes = ['id', 'todo', 'listID', 'completed'];
 
 // ritorna tutti i todo
 async function getTodos(){
-    const [result, ] = await pool.query("SELECT * FROM todos");  // return Promise [results, fields]
-    console.log("RESULT: ", result)
-    return result;
+    // const [result, ] = await pool.query("SELECT * FROM todos");  // return Promise [results, fields]    
+    return await Todo.findAll({
+        attributes:attributes
+    });
 }
 // ritorna i todo con filtro
 async function getTodoById(account_id){
     if(account_id){
-        const [result, ] = await pool.query("SELECT * FROM todos WHERE id=?",[account_id]);  // return Promise [results, fields]
-
-        // return singola lista == result[0]
-        return result[0];
+        // const [result, ] = await pool.query("SELECT * FROM todos WHERE id=?",[account_id]);  // return Promise [results, fields]
+        return await Todo.findAll(
+            {attributes:attributes},
+            {
+                where: {
+                    id: account_id
+                }
+            }
+        );
     }
-    return [];
+    return null
 }
 
 // ritorna tutti i todo che hanno la lista_id
-async function getTodosByListId(list_id){
-    if(list_id){
-        const [result, ] = await pool.query("SELECT * FROM todos WHERE list_id=?",[list_id]);  // return Promise [results, fields]
-        
-        // return singola lista == result[0]
-        return result;
+async function getTodosByListId(listId){
+    if(listId){
+        return await Todo.findAll(
+            {
+                attributes:attributes
+            },
+            {
+                where: {
+                    listId: listId
+                }
+            }
+        );
+        // const [result, ] = await pool.query("SELECT * FROM todos WHERE listId=?",[listId]);  // return Promise [results, fields]        
     }
-    return [];
+    return null;
 }
 
 // rimuove un todo con filtro
 async function deleteTodoById(account_id){
     if(account_id){
-        const [result, ] = await pool.query("DELETE FROM todos WHERE id=?",[account_id]);  // return Promise [results, fields]
-        // numero di righe cancellate
-        return result.affectedRows;    
+        // const [result, ] = await pool.query("DELETE FROM todos WHERE id=?",[account_id]);  // return Promise [results, fields]
+        return await Todo.destroy(
+            {attributes:attributes},
+            {
+                where: { id: account_id}
+            }
+        )        
     }
-    return [];
+    return null;
 }
 
-async function addTodo({todo, completed, list_id}){
-    const newTodo = {todo, completed, list_id};
+async function addTodo({todo, completed, listId}){
+    const newTodo = {todo, completed, listId};
     if(newTodo){
         completed = completed || 0;
-        const query = "INSERT INTO todos (todo, completed, list_id) VALUES (?, ?, ?)";
-        const [result, ] = await pool.query(query,[todo, completed, list_id]);  // return Promise [results, fields]
-        
-        // return 
-        // result => {
-        //     "fieldCount": 0,
-        //     "affectedRows": 1,
-        //     "insertId": 6,
-        //     "info": "",
-        //     "serverStatus": 2,
-        //     "warningStatus": 0
-        // }
 
-        
-
-        // return la lista appena inserita
-        const post = await getTodoById(result.insertId)
-        return post;
+        // const [result, ] = await pool.query("INSERT INTO todos (todo, completed, listId) VALUES (?, ?, ?)",[todo, completed, listId]);  // return Promise [results, fields]
+        return await List.create({
+            todo:todo,
+            completed:completed,
+            listId: listId
+        })
     }
-    return [];
+    return null;
 }
 
-async function updateTodo(account_id, {todo, completed, list_id}){
-    const newTodo = {todo, completed, list_id};
+async function updateTodo(account_id, {todo, completed, listId}){
+    const newTodo = {todo, completed, listId};
     if(account_id && newTodo){
         completed = completed || 0;
-        const [result, ] = await pool.query("UPDATE todos SET todo=?, list_id=?, completed=? WHERE id=?",[todo,list_id,completed, account_id]);  // return Promise [results, fields]
+        // const [result, ] = await pool.query("UPDATE todos SET todo=?, listId=?, completed=? WHERE id=?",[todo,listId,completed, account_id]);  // return Promise [results, fields]
         
-        console.log("update result: ", result);
-
-        const todos = await getTodoById(account_id);        
-        return todos;
+        return await Todo.update(
+            {
+                todo:todo,
+                completed:completed,
+                listId: listId
+            },
+            {
+                where: {
+                    id: account_id
+                }
+            }
+        )
     }
-    return [];
+    return null;
 }
 
 module.exports = {

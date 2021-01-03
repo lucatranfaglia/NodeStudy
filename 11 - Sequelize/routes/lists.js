@@ -68,7 +68,7 @@ router.patch('/:id([0-9]+)', async (req, res)=>{
         const data = req.body;
 
         const updList = await updateList(id, data.name);
-        res.status(updList ? 200 : 404).json(updList ? updList : 'Record not found');
+        res.status(updList[0] ? 200 : 404).json(updList[0] ? updList[0] : 'Record not found');
     } 
     catch (error) {
         res.status(500).send(error.toString());

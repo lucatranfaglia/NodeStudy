@@ -1,13 +1,36 @@
 TODOLIST con Express
 
-Dependences
-    express
+ORM - Sequelize
+
+# Dependences
+bcrypt (criptare le password)
+faker (genera dati finti)
+sequelize
+sequelize-cli (-g)
+    sequelize-cli init
+
+# Migrations - aggiungere foreignkey
+USER (create file in migrations) - sequelize model:generate --name user --attributes id:bigint,name:string,email:string,password:string
+LIST - sequelize model:generate --name list --attributes name:string,userId:bigint
+TODO - sequelize model:generate --name todo --attributes todo:string,listId:bigint,completed:boolean
+
+    sequelize db:migrate   
+    sequelize db:migrate:undo // se dovessero essere problemi alla migrazione, rimuove la migrazione fatta con l'errore
+    sequelize db:migrate:undo:all   // rimuove tutte le migrazioni fatte, ovvero tutte le tabelle nel db
 
 
-Info
-req.query -> abbiamo tutti i paramentrii dall'URL
-req.params -> abbiamo tutti i segmenti di una rotta (/:id/)
-req.body -> abbiamo tutti i parametri nella post della chiamata
+# Model sequelize
+modelName : assegni il nome al modello
+timestamps: false => non aggiunge gli attributi updateAt e createdAt. In caso non venga inserito creerà gli attributi in automatico
+paranoid: true => non cancella fisicamente la riga, ma aggiunge l'attributo deletedAt con la data corrente
+tableName: aassegni il nome della tabella
 
-<!-- {...oldTodo, ...newTodo } : lascia le proprietà vecchie che ci sono e modifica solo i paramentri che sono stati modificati in newTodo -->
-data.todos[id] = {...oldTodo, ...newTodo };
+Per creare una Foreign Key, in sequelize, è necessario specificare la lunghezza della Primary key (12)
+
+# Generate row into db
+User (create file in seeders) - sequelize-cli seed:generate --name insert-users
+MIGRATE ALL- sequelize-cli db:seed:all
+
+
+# Query
+findByPk    // find by Primary key

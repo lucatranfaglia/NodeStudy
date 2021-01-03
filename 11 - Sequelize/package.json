@@ -22,10 +22,16 @@
   },
   "homepage": "https://github.com/lucatranfaglia/NodeStudy#readme",
   "dependencies": {
+    "bcrypt": "^5.0.0",
     "debug": "^4.3.1",
     "dotenv": "^8.2.0",
     "express": "^4.17.1",
+    "faker": "^5.1.0",
     "morgan": "^1.10.0",
-    "mysql2": "^2.2.5"
+    "mysql2": "^2.2.5",
+    "sequelize": "^6.3.5"
+  },
+  "devDependencies": {
+    "sequelize-cli": "^6.2.0"
   }
 }
