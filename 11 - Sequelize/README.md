@@ -7,7 +7,7 @@
 - faker (genera dati finti)
 - sequelize
 - sequelize-cli (-g)
-    sequelize-cli init
+    - sequelize-cli init
 
 # Migrations - aggiungere foreignkey
 <!-- USER (create file in migrations) -->
