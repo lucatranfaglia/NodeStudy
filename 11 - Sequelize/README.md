@@ -3,6 +3,7 @@
 # ORM - Sequelize
 
 # Dependences
+- express
 - bcrypt (criptare le password)
 - faker (genera dati finti)
 - sequelize
@@ -45,4 +46,5 @@ Per creare una Foreign Key, in sequelize, è necessario specificare la lunghezza
 
 # Query
 // find by Primary key
-findByPk    
+
+    findByPk    
