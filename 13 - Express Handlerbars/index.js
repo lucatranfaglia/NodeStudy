@@ -49,13 +49,17 @@ app.use('/api/todos', todosRoutes);
 app.use('/api/lists', listsRoutes);
 
 
-// Per non creare delle costanti, uso app.use
-app.use('/lists', require('./routes/lists'))
+// Per non creare delle costanti, uso app.use con require
+
+// per visualizza tutte le liste sia per '/lists' che per '/' passo una ARRAY di match
+app.use(['/lists', '/'], require('./routes/lists'))
 
 app.use('/todos', require('./routes/todos'))
-// Homepage
-app.use('/', (req, res) => {
-    res.render('index')
-});
+
+// LISTA di LISTE
+// app.use('/lists', require('./routes/lists'))
+// app.use('/', (req, res) => {
+//     res.render('index')
+// });
 
 module.exports = app;

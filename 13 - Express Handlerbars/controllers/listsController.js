@@ -1,6 +1,21 @@
 const List = require('../models').List;
+const Todo = require('../models').Todo;
+
 // colonne che si voglio visualizzare
-const attributes = ['id', 'name', 'userId'];
+// const attributes = ['id', 'name', 'userId'];
+
+const attributes = {
+    include: [ 
+        // funzione: [count (colonna da contare), alias]
+        [   
+            List.sequelize.fn('COUNT', 
+                // colonna e alias
+                List.sequelize.col('Todos.id')),
+            'nTodos'
+        ]
+    ],
+    exclude: ['createdAt', 'updatedAt']
+};
 
 
 // ritorna tutte le liste con i relativi utenti
@@ -8,7 +23,13 @@ async function getLists(){
 
     return await List.findAll({
         attributes: attributes,
-        include: ['User']
+        subQuery: false,
+        include: [
+            // per contare quanti todos ha una lista
+            {model: Todo, attributes: []},
+            'User'
+        ],
+        group: ['List.id']
         // limit: 20,
         // offset: 10      // partendo dalla 10° posizione
     });
@@ -21,7 +42,12 @@ async function getListById(listId){
         // Find by Primary Key
         return await List.findByPk(listId, 
             {
-                attributes: attributes
+                attributes: attributes,
+                include: [
+                    // per contare quanti todos ha una lista
+                    {model: Todo, attributes: []},
+                    'User'
+                ],
             }
         );
 
@@ -44,7 +70,10 @@ async function getUserByList(listId){
         return await List.findByPk(listId, 
             {
                 attributes: attributes,
-                include: ['User']
+                include: [
+                    {model: Todo, attributes: []},
+                    'User'
+                ]
             });
 
 

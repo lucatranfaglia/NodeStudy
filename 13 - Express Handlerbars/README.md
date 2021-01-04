@@ -56,12 +56,71 @@ I template sono i file prensenti nella cartella VIEWS
 Models
     
     associate(models)
-        
+        //un model Todo appartiene al model List
+
         todo.belongsTo(models.List)
+        
+        // una lista ha tanti Todos
+
+        list.hasMany(models.Todo);
+
+        //un model List appartiene al model User
+
+        list.belongsTo(models.User);
 
 Controllers
     
     findAll
 
-        <!-- includo il modella da collegare -->
+        // includo il modella da collegare
+
         include: ['List'] 
+
+
+        List.findAll({
+
+            attributes: attributes,
+
+            subQuery: false,
+
+            include: [
+
+                // LEFT OUTER JOIN - mostra le liste anche se non hanno Todos
+
+                {model: Todo}
+                
+
+                // INNER JOIN - mostrare solo le liste che hanno i TODOS
+
+                {model: Todo, required: true}
+            ],
+
+            group: ['List.id']
+        
+    });
+
+
+    attribues
+
+        // conta i todos di una lista 
+
+        const attributes = {
+    
+            include: [ 
+            
+                // funzione conta:[ fn(count, (colonna da contare)), alias ]
+
+                List.sequelize.fn('COUNT', List.sequelize.col('Todos.id')),
+
+                'total'
+            ],
+
+            exclude: ['createdAt', 'updatedAt']
+
+        };
+
+
+file .hbs
+
+    // per attributi creati nella query ma che non sono presenti nel modello
+    {{this.dataValues.nTodos}}

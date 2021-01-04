@@ -2,17 +2,58 @@
     Page Lists list
 </h1>
 
-<ul>
+
+<div class="container">
     {{!-- HELPER hi handlebars --}}
-    {{#each lists}}
-        <li>
-            {{this.name}}
-            <a href="/lists/{{this.id}}" class="btn btn-primary" role="button">
-                List ID
-            </a>
-            <a href="/lists/{{this.id}}/todos" class="btn btn-primary" role="button">
-                Todo by ListID
-            </a>
-        </li>
+    <div class="row d-flex flex-row">
+        <div class="col-2 d-flex justify-content-start">
+            <b>Name</b>
+        </div>
+        <div class="col-2 d-flex justify-content-center align-items-center">
+            <b>List ID</b>
+        </div>
+        <div class="col-2 d-flex justify-content-center align-items-center ">
+            <b>Todo</b>
+        </div>
+        <div class="col-2 d-flex justify-content-center align-items-center">
+            <b>User</b>
+        </div>
+        <div class="col-2 d-flex justify-content-center align-items-center">
+            <b>N T</b>
+        </div>
+        <div class="col-2 d-flex justify-content-center align-items-center">
+            <b>Action</b>
+        </div>
+    </div>
+    {{#each lists}}    
+        <div class="row d-flex flex-row">
+            <div class="col-2 d-flex justify-content-start align-items-start">
+                {{this.name}}            
+            </div>
+            <div class="col-2 d-flex justify-content-center align-items-center">
+                <a href="/lists/{{this.id}}" class="btn btn-primary" role="button"></a>                            
+            </div>
+            <div class="col-2 d-flex justify-content-center align-items-center">
+                <a href="/lists/{{this.id}}/todos" class="btn btn-primary" role="button"></a>
+            </div>
+            <div class="col-2 d-flex justify-content-center align-items-center">
+                <a href="/lists/{{this.userId}}/user" class="btn btn-primary" role="button"></a>
+            </div>
+            <div class="col-2 d-flex justify-content-center align-items-center">
+                <span class="badge badge-primary badge-pill">
+                    {{this.dataValues.nTodos}}
+
+                </span>
+            </div>
+            <div class="col-2 d-flex justify-content-center align-items-center">
+                <button class="btn btn-primary">
+                    Update
+                </button>
+                <button class="btn btn-danger">
+                    Delete
+                </button>                
+            </div>
+            
+        </div>
     {{/each}}
-</ul>
+</div>

@@ -10,8 +10,11 @@ module.exports = (sequelize, DataTypes) => {
      * The `models/index` file will call this method automatically.
      */
     static associate(models) {
-      // define association here
+      // il modello list appartiene al modello user
       list.belongsTo(models.User);      
+
+      // una list ha tanti todos
+      list.hasMany(models.Todo);
     }
   };
   list.init({
