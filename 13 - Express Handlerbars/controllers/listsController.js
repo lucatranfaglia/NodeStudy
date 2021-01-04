@@ -3,40 +3,45 @@ const List = require('../models').List;
 const attributes = ['id', 'name', 'userId'];
 
 
-// ritorna tutti i list
+// ritorna tutte le liste con i relativi utenti
 async function getLists(){
 
     return await List.findAll({
         attributes: attributes,
+        include: ['User']
         // limit: 20,
         // offset: 10      // partendo dalla 10° posizione
     });
 }
 
-// ritorna i list con filtro
-async function getListById(account_id){    
-    if(account_id){
+// ritorna la lista con un determinato ID
+async function getListById(listId){    
+    if(listId){
 
         // Find by Primary Key
-        return await List.findByPk(account_id, {attributes: attributes});
+        return await List.findByPk(listId, 
+            {
+                attributes: attributes
+            }
+        );
 
 
         return await List.findAll({
             attributes: attributes,
             where: {
-                id: account_id
+                id: listId
             }
         });
     }
     return null;
 }
 
-// ritorna i list con filtro
-async function getUserByList(accountId){    
-    if(accountId){
+// ritorna una lista e le relative info dell'utente (tramite listId)
+async function getUserByList(listId){    
+    if(listId){
 
         // Find by Primary Key
-        return await List.findByPk(accountId, 
+        return await List.findByPk(listId, 
             {
                 attributes: attributes,
                 include: ['User']
@@ -47,7 +52,7 @@ async function getUserByList(accountId){
         //     attributes: attributes,
         //     include: ['User'],
         //     where: {
-        //         id:accountId
+        //         id:listId
         //     }
         // });
     }
@@ -55,11 +60,11 @@ async function getUserByList(accountId){
 }
 
 // rimuove un list con filtro
-async function deleteListById(account_id){
-    if(account_id){
+async function deleteListById(listId){
+    if(listId){
         // const [result, ] = await pool.query("DELETE FROM lists WHERE id=?",[account_id]);  // return Promise [results, fields]
         return await List.destroy({
-            where: { id: account_id}
+            where: { id: listId}
         })
     }
     return null;

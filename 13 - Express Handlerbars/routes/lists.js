@@ -5,8 +5,8 @@ const router = express.Router();
 
 // controller con db
 const {getLists, getListById, getUserByList, deleteListById, addList, updateList} = require('../controllers/listsController');
-
 const {getTodosByListId} = require('../controllers/todosController');
+
 router.get('/', async (req, res)=>{
     try {
         const result = await getLists();
@@ -33,8 +33,9 @@ router.get('/:listId([0-9]+)', async (req, res)=>{
 router.get('/:listId([0-9]+)/todos', async (req, res)=>{
     try {
         const listId = req.params.listId;
-        const result = await getTodosByListId(listId);
-        res.render('todos', {todos: result});
+        const list_result = await getListById(listId);
+        const todos_result = await getTodosByListId(listId);
+        res.render('todos', {todos: todos_result, list: list_result });
     } 
     catch (error) {
         res.status(500).send(error.toString());

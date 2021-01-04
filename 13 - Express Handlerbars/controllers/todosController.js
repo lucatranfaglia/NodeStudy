@@ -30,11 +30,18 @@ async function getTodosByListId(listId){
     if(listId){
         return await Todo.findAll({
             attributes: attributes,
-            include: ['List'],
             where: {
                 listId:listId
             }
         });
+        // NON OTTIMIZZATO
+        // return await Todo.findAll({
+        //     attributes: attributes,
+        //     include: ['List'],
+        //     where: {
+        //         listId:listId
+        //     }
+        // });
         // const [result, ] = await pool.query("SELECT * FROM todos WHERE listId=?",[listId]);  // return Promise [results, fields]        
     }
     return null;
