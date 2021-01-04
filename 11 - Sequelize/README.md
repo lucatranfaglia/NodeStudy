@@ -3,10 +3,10 @@
 # ORM - Sequelize
 
 # Dependences
-bcrypt (criptare le password)
-faker (genera dati finti)
-sequelize
-sequelize-cli (-g)
+- bcrypt (criptare le password)
+- faker (genera dati finti)
+- sequelize
+- sequelize-cli (-g)
     sequelize-cli init
 
 # Migrations - aggiungere foreignkey
