@@ -1,0 +1,33 @@
+<h1>
+    Page Lists users (by userId)
+</h1>
+
+<div class="container">
+    {{!-- HELPER hi handlebars --}}
+    
+    <div class="row">
+        <div class="col-4">
+            <div class="row">
+                 <div class="col-6">
+                    <b>Name</b>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-6">{{user.User.name}}</div>
+            </div>
+            
+        </div>
+        <div class="col-4">
+            <div class="row">
+                <div class="col-6">
+                    <b>Email</b>
+                </div>
+            </div>
+            <div class="row">            
+                <div class="col-6"> {{user.User.email}}</div>
+           </div>
+        </div>
+           
+    </div>
+    
+</div>

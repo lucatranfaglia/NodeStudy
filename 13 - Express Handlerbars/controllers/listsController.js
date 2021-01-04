@@ -8,10 +8,11 @@ async function getLists(){
 
     return await List.findAll({
         attributes: attributes,
-        limit: 20,
-        offset: 10      // partendo dalla 10° posizione
+        // limit: 20,
+        // offset: 10      // partendo dalla 10° posizione
     });
 }
+
 // ritorna i list con filtro
 async function getListById(account_id){    
     if(account_id){
@@ -26,6 +27,29 @@ async function getListById(account_id){
                 id: account_id
             }
         });
+    }
+    return null;
+}
+
+// ritorna i list con filtro
+async function getUserByList(accountId){    
+    if(accountId){
+
+        // Find by Primary Key
+        return await List.findByPk(accountId, 
+            {
+                attributes: attributes,
+                include: ['User']
+            });
+
+
+        // return await List.findAll({
+        //     attributes: attributes,
+        //     include: ['User'],
+        //     where: {
+        //         id:accountId
+        //     }
+        // });
     }
     return null;
 }
@@ -75,6 +99,7 @@ async function updateList(account_id, name){
 module.exports = {
     getLists,
     getListById,
+    getUserByList,
     deleteListById,
     addList,
     updateList

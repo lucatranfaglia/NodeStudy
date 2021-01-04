@@ -11,6 +11,7 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
+      list.belongsTo(models.User);      
     }
   };
   list.init({
@@ -26,7 +27,6 @@ module.exports = (sequelize, DataTypes) => {
     },
     userId: {
       type: DataTypes.BIGINT,
-      allowNull: false,
     }
   }, {
     sequelize,

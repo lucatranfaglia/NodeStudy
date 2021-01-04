@@ -1,0 +1,14 @@
+<h1>
+    Page Todos list (also by listId: {{todos.listId}})
+</h1>
+
+<ul>
+    {{!-- HELPER hi handlebars --}}
+    {{#each todos}}
+        <li>
+            
+            {{this.todo}}
+            
+        </li>
+    {{/each}}
+</ul>

@@ -1,0 +1,18 @@
+<h1>
+    Page Lists list
+</h1>
+
+<ul>
+    {{!-- HELPER hi handlebars --}}
+    {{#each lists}}
+        <li>
+            {{this.name}}
+            <a href="/lists/{{this.id}}" class="btn btn-primary" role="button">
+                List ID
+            </a>
+            <a href="/lists/{{this.id}}/todos" class="btn btn-primary" role="button">
+                Todo by ListID
+            </a>
+        </li>
+    {{/each}}
+</ul>

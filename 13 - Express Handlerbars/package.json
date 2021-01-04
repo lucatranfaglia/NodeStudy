@@ -23,6 +23,7 @@
   "homepage": "https://github.com/lucatranfaglia/NodeStudy#readme",
   "dependencies": {
     "bcrypt": "^5.0.0",
+    "bootstrap": "^4.5.3",
     "debug": "^4.3.1",
     "dotenv": "^8.2.0",
     "express": "^4.17.1",

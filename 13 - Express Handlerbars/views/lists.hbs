@@ -1,0 +1,20 @@
+<h1>
+    Page Lists list (by listId)
+</h1>
+
+<ul>
+    {{!-- HELPER hi handlebars --}}
+    
+    <li class="{{list.id}}">
+        List: 
+        <a href="/lists/{{list.id}}/todos">
+            {{list.name}}
+        </a>
+        -
+        UserId:
+        <a href="/lists/{{list.userId}}/user">
+            {{list.userId}}
+        </a>    
+    </li>
+    
+</ul>

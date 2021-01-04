@@ -14,14 +14,13 @@ async function getTodos(){
 async function getTodoById(account_id){
     if(account_id){
         // const [result, ] = await pool.query("SELECT * FROM todos WHERE id=?",[account_id]);  // return Promise [results, fields]
-        return await Todo.findAll(
-            {attributes:attributes},
-            {
-                where: {
-                    id: account_id
-                }
+        return await Todo.findAll({
+            attributes: attributes,
+            where: {
+                id: account_id
             }
-        );
+            
+        });
     }
     return null
 }
@@ -29,16 +28,13 @@ async function getTodoById(account_id){
 // ritorna tutti i todo che hanno la lista_id
 async function getTodosByListId(listId){
     if(listId){
-        return await Todo.findAll(
-            {
-                attributes:attributes
-            },
-            {
-                where: {
-                    listId: listId
-                }
+        return await Todo.findAll({
+            attributes: attributes,
+            include: ['List'],
+            where: {
+                listId:listId
             }
-        );
+        });
         // const [result, ] = await pool.query("SELECT * FROM todos WHERE listId=?",[listId]);  // return Promise [results, fields]        
     }
     return null;
@@ -48,12 +44,12 @@ async function getTodosByListId(listId){
 async function deleteTodoById(account_id){
     if(account_id){
         // const [result, ] = await pool.query("DELETE FROM todos WHERE id=?",[account_id]);  // return Promise [results, fields]
-        return await Todo.destroy(
-            {attributes:attributes},
-            {
-                where: { id: account_id}
+        return await Todo.destroy({
+            attributes:attributes,
+            where: { 
+                id: account_id
             }
-        )        
+        })        
     }
     return null;
 }

@@ -11,6 +11,8 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
+      // Collego i due Modelli
+      todo.belongsTo(models.List);
     }
   };
   todo.init({
@@ -26,12 +28,7 @@ module.exports = (sequelize, DataTypes) => {
     },
     listId: {
       type: DataTypes.BIGINT,
-      allowNull: false,
-      index: true,
-      references:{
-        model: 'Lists',
-        key: 'id'
-      },
+      // allowNull: false,      
     },
     completed: {
       type: DataTypes.BOOLEAN,

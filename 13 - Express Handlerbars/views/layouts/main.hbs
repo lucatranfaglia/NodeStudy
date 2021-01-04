@@ -1,0 +1,23 @@
+{{!-- 
+    Template Generale
+    Da qui viene renderizzato tutte le pagine HTML presenti su "views" o "partials"
+ --}}
+<!doctype html>
+<html lang="en">
+  <head>
+    
+      {{> header}}
+  </head>
+
+  <body>
+    {{> navheader title="Hello"}}
+
+    <!-- Begin page content -->
+    <main role="main" class="container">
+      {{{body}}}
+    </main>
+
+    {{> footer}}
+   
+  </body>
+</html>
