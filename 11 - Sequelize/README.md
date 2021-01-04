@@ -10,9 +10,12 @@ sequelize-cli (-g)
     sequelize-cli init
 
 # Migrations - aggiungere foreignkey
-USER (create file in migrations) - sequelize model:generate --name user --attributes id:bigint,name:string,email:string,password:string
-LIST - sequelize model:generate --name list --attributes name:string,userId:bigint
-TODO - sequelize model:generate --name todo --attributes todo:string,listId:bigint,completed:boolean
+<!-- USER (create file in migrations) -->
+sequelize model:generate --name user --attributes id:bigint,name:string,email:string,password:string
+<!-- LIST -->
+sequelize model:generate --name list --attributes name:string,userId:bigint
+<!-- TODO -->
+sequelize model:generate --name todo --attributes todo:string,listId:bigint,completed:boolean
 
     sequelize db:migrate   
     sequelize db:migrate:undo // se dovessero essere problemi alla migrazione, rimuove la migrazione fatta con l'errore
@@ -28,8 +31,11 @@ tableName: aassegni il nome della tabella
 Per creare una Foreign Key, in sequelize, è necessario specificare la lunghezza della Primary key (12)
 
 # Generate row into db
-User (create file in seeders) - sequelize-cli seed:generate --name insert-users
-MIGRATE ALL- sequelize-cli db:seed:all
+<!-- User (create file in seeders) -->
+sequelize-cli seed:generate --name insert-users
+
+<!-- MIGRATE ALL -->
+sequelize-cli db:seed:all
 
 
 # Query
