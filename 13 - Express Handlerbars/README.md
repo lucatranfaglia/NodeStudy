@@ -157,8 +157,8 @@ file .hbs
 
     <form>
 
-        // this : button
-        // parentNode : form
+        // this : elemento corrente (button)
+        // parentNode : il padre di BUTTON (form)
         // q.value='' : imposta la q ha vuoto
 
         <button onclick="this.parentNode.q.value=''">Reset</button>
