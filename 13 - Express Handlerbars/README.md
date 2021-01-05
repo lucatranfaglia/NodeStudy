@@ -156,9 +156,11 @@ file .hbs
 # Javascript 
 
     <form>
+        <input type="text" name="q">
 
         // this : elemento corrente (button)
-        // parentNode : il padre di BUTTON (form)
-        // q.value='' : imposta la q ha vuoto
+        // parentNode : il padre di BUTTON (form). parentNode è un array di elementi dove è presente anche "q"
+        // q.value='' : imposta elemento con name "q" ha vuoto
+
 
         <button onclick="this.parentNode.q.value=''">Reset</button>
