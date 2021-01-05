@@ -25,6 +25,7 @@ Popola nel db utenti fake
 - express
 - express-handlebars
 - bootstrap
+- method-override
 
 
 # Sviluppo dei motori di template per Express
@@ -119,8 +120,45 @@ Controllers
 
         };
 
+# handlebars
 
 file .hbs
 
     // per attributi creati nella query ma che non sono presenti nel modello
     {{this.dataValues.nTodos}}
+
+    // foreach di todos di
+    {{#each todos}}
+
+        // nel caso non trovassi nessun todos
+        {{else}}    
+
+
+# Routes render 
+    
+    // showBackButton
+
+    res.render('index', {lists: result, showBackButton: false});
+
+
+# method-override (middleware) 
+
+    Importiamo nell'index la Custum logic del package.
+    Differenzia i diversi method (delete, patch...) differenti da post e get
+
+
+# method
+
+    PUT - modifica tutta la riga nel database
+    PATCH - modifica un elemento della riga
+
+
+# Javascript 
+
+    <form>
+
+        // this : button
+        // parentNode : form
+        // q.value='' : imposta la q ha vuoto
+
+        <button onclick="this.parentNode.q.value=''">Reset</button>
