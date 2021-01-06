@@ -134,6 +134,13 @@ file .hbs
         {{else}}    
 
 
+file navheader.hbs
+
+    // value="{{q}}" => passato a parametro tramite il file main.hbs
+
+    <input class="form-control" type="text" name="q" value="{{q}}">
+
+
 # Routes render 
     
     // showBackButton
@@ -160,7 +167,7 @@ file .hbs
 
         // this : elemento corrente (button)
         // parentNode : il padre di BUTTON (form). parentNode è un array di elementi dove è presente anche "q"
-        // q.value='' : imposta elemento con name "q" ha vuoto
+        // q.value='' : imposta il valore dell'elemento "q" ha vuoto
 
 
         <button onclick="this.parentNode.q.value=''">Reset</button>

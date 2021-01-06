@@ -6,6 +6,8 @@
     {{list.name}}
 </h2>
 
+{{#if todos}}
+
 <ul>
     {{!-- HELPER hi handlebars --}}
     {{#each todos}}
@@ -13,6 +15,14 @@
             
             {{this.todo}}
             
-        </li>
+        </li>        
     {{/each}}
 </ul>
+
+{{else}}
+    <h5>
+    
+        No todos found
+        
+    </h5>
+{{/if}}

@@ -1,6 +1,6 @@
 const List = require('../models').List;
 const Todo = require('../models').Todo;
-
+const Op = require('../models').Sequelize.Op;
 // colonne che si voglio visualizzare
 // const attributes = ['id', 'name', 'userId'];
 
@@ -19,7 +19,14 @@ const attributes = {
 
 
 // ritorna tutte le liste con i relativi utenti
-async function getLists(){
+async function getLists(pars = {}){
+
+    // search into page
+    const where = pars.q ? { 
+            name : {
+                [Op.like] : '%'+pars.q+'%'
+            },
+        } : {};
 
     return await List.findAll({
         attributes: attributes,
@@ -29,7 +36,9 @@ async function getLists(){
             {model: Todo, attributes: []},
             'User'
         ],
-        group: ['List.id']
+        group: ['List.id'],
+        order: [['createdAt', 'DESC']],
+        where: where
         // limit: 20,
         // offset: 10      // partendo dalla 10° posizione
     });
@@ -48,16 +57,17 @@ async function getListById(listId){
                     {model: Todo, attributes: []},
                     'User'
                 ],
+                order: [['createdAt', 'DESC']]                
             }
         );
 
 
-        return await List.findAll({
-            attributes: attributes,
-            where: {
-                id: listId
-            }
-        });
+        // return await List.findAll({
+        //     attributes: attributes,
+        //     where: {
+        //         id: listId
+        //     }
+        // });
     }
     return null;
 }
@@ -99,30 +109,28 @@ async function deleteListById(listId){
     return null;
 }
 
-async function addList(name){
-    if(name){
+async function addList(listName){
+    if(listName){
         
         // const [result, ] = await pool.query("INSERT INTO lists (name, user_id) VALUES (?, ?)",[name, 1]);  // return Promise [results, fields]
         return await List.create({
             userId:1,
-            name:name
+            name:listName
         })
         
     }
     return null;
 }
 
-async function updateList(account_id, name){
-    if(account_id && name){
+async function updateList(listId, listName){
+    if(listId && listName){
 
-        // const [result, ] = await pool.query("UPDATE lists SET name=? WHERE id=?",[name, account_id]);  // return Promise [results, fields]
+        // const [result, ] = await pool.query("UPDATE lists SET name=? WHERE id=?",[name, listId]);  // return Promise [results, fields]
         return await List.update(
-            {
-                name: name
-            },
-            {
+            {name: listName},
+            {   
                 where: { 
-                    id: account_id
+                    id: listId
                 }
             }
         )

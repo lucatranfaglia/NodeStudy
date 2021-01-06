@@ -1,0 +1,24 @@
+<h1>
+    Insert new list
+</h1>
+
+
+<div class="container">
+    <form method="post" action="/lists/" name="listNew" id="form_listNew">
+        <div class="row d-flex flex-row">
+            <div class="col-md-8 form-group">
+                {{!-- 
+                    res.render('list/edit', {list: result});
+                    <input type="text" name="list_name" value="{{list.name}}">
+                --}}
+                {{!-- res.render('list/edit', {...result}); --}}
+                <input class="form-control" type="text" name="list_name" value=""> 
+            </div>
+            <div class="col-md-4 form-group">
+                <button class="btn btn-success" title="Insert List" value="SAVE">SAVE</button>
+                
+                <button class="btn btn-warning text-white" title="Back to list" onclick="location.href='/lists' " value="BACK">BACK</button>
+            </div>
+        </div>
+    </form>
+</div>

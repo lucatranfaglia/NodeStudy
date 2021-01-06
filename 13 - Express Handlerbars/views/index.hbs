@@ -2,9 +2,17 @@
     Page Lists list
 </h1>
 
-
 <div class="container">
     {{!-- HELPER hi handlebars --}}
+
+    <div class="row">
+        <div class="offset-md-1 col-md-10">
+            {{>newlist}}
+        </div>
+
+    </div>
+
+
     <div class="row d-flex flex-row">
         <div class="col-2 d-flex justify-content-start">
             <b>Name</b>
@@ -26,18 +34,24 @@
         </div>
     </div>
     {{#each lists}}    
-        <div class="row d-flex flex-row">
+        <div class="row d-flex flex-row border border-light rounded bg-light mt-1 mb-1">
             <div class="col-2 d-flex justify-content-start align-items-start">
                 {{this.name}}            
             </div>
             <div class="col-2 d-flex justify-content-center align-items-center">
-                <a href="/lists/{{this.id}}" class="btn btn-primary" role="button"></a>                            
+                <a href="/lists/{{this.id}}" class="btn btn-primary" role="button">
+                    <i class="fa fa-share"></i>
+                </a>                            
             </div>
             <div class="col-2 d-flex justify-content-center align-items-center">
-                <a href="/lists/{{this.id}}/todos" class="btn btn-primary" role="button"></a>
+                <a href="/lists/{{this.id}}/todos" class="btn btn-primary" role="button">
+                    <i class="fa fa-share"></i>
+                </a>
             </div>
             <div class="col-2 d-flex justify-content-center align-items-center">
-                <a href="/lists/{{this.userId}}/user" class="btn btn-primary" role="button"></a>
+                <a href="/lists/{{this.userId}}/user" class="btn btn-primary" role="button">
+                    <i class="fa fa-share"></i>
+                </a>
             </div>
             <div class="col-2 d-flex justify-content-center align-items-center">
                 <span class="badge badge-primary badge-pill">
@@ -46,12 +60,20 @@
                 </span>
             </div>
             <div class="col-2 d-flex justify-content-center align-items-center">
-                <button class="btn btn-primary">
-                    Update
-                </button>
-                <button class="btn btn-danger">
-                    Delete
-                </button>                
+                
+                <a href="/lists/{{this.id}}/edit" class="btn btn-primary" title="UPDATE LIST">
+                    <i class="fa fa-edit"></i>
+                </a>
+                
+                <form method="post" action="/lists/{{this.id}}">
+                    {{!-- Server per fare riconoscere il metodo DELETE --}}
+                    <input type="hidden" name="_method" value="DELETE">
+
+                    {{!-- tooltip = title="DELETE LIST" --}}
+                    <button class="btn btn-danger" title="DELETE LIST">
+                        <i class="fa fa-trash-alt"></i>
+                    </button>        
+                </form>        
             </div>
             
         </div>

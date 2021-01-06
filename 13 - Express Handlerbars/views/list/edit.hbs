@@ -1,0 +1,39 @@
+<h1>
+    Page List edit
+</h1>
+
+
+<div class="container">
+    <form method="post" action="/lists/{{this.id}}" name="list" id="form_list">
+        <div class="row d-flex flex-row">
+            <div class="col-md-8 form-group">
+                {{!-- 
+                    res.render('list/edit', {list: result});
+                    <input type="text" name="list_name" value="{{list.name}}">
+                --}}
+                {{!-- res.render('list/edit', {...result}); --}}
+                <input class="form-control" type="text" name="list_name" value="{{name}}"> 
+            </div>
+            <div class="col-md-4 form-group">
+                <button class="btn btn-warning" title="Update" onclick="updateList(this); return false;" value="UPDATE">Update</button>
+            
+                <input type="hidden" id="method" name="_method" value="DELETE">
+                <button class="btn btn-danger" title="Delete" onclick="updateList(this); return false;" value="DELETE">Delete</button>
+            </div>
+        </div>
+    </form>
+</div>
+<script>
+    {{!-- DELETE || PATCH --}}
+    function updateList(btn){
+        const method = document.getElementById('method');
+        const form = document.getElementById('form_list');
+
+        btn.value==='DELETE' ? method.value = 'DELETE' : method.value = 'PATCH';
+
+        {{!-- document.forms.list.submit(); --}}
+        form.submit();
+        console.log("Value", btn.value);
+    }
+
+</script>
