@@ -1,11 +1,30 @@
 const logger = require('morgan');
+const path = require('path');
+
+// ------------------------------------
+// Express
+// ------------------------------------
 const express = require('express');
 
-const path = require('path');
+// Express-handlebars - Template Engine
 const ehb = require('express-handlebars');
 
+// Express-session - Gestione delle sessioni
+const session = require('express-session');
+
+// ------------------------------------
+// connect-flash - 
+// ------------------------------------
+const flash = require('connect-flash');
+
+// ------------------------------------
+// method-override - per lavorare con metodi DELETE, PATH
+// ------------------------------------
 const methodOverride = require('method-override');
 
+// ------------------------------------
+// Routes
+// ------------------------------------
 const todosRoutes = require('./routes/api/todos');
 const listsRoutes = require('./routes/api/lists');
 
@@ -13,7 +32,9 @@ const listsRoutes = require('./routes/api/lists');
 // creo un'istanza di express
 const app = express();
 
-// Engine
+// ------------------------------------
+// TEMPLATE Engine HandleBars
+// ------------------------------------
 // config Engine
 let hbs = ehb.create({ 
     defaultLayout: 'main', 
@@ -27,9 +48,14 @@ app.engine('.hbs', hbs.engine);
 // app.engine('.hbs', ehb({extname: '.hbs'}));
 app.set('view engine', '.hbs');
 
+// ------------------------------------
 // HTTP request logger middleware for node.js
+// ------------------------------------
 app.use(logger('dev'));
 
+// ------------------------------------
+// FORMAT 
+// ------------------------------------
 // POSTMAN POST x-www-form-urlencoded (chiave-valore) : per la lettura del dato nel req.body è necessario convertire il contenuto in JSON 
 // true: vengono mappati a json anche i paramentri a null e undefined
 // false: vengono mappati a json solo stringhe
@@ -38,10 +64,15 @@ app.use(express.urlencoded({extended: true}));
 // POSTMAN POST raw: per la lettura del dato nel req.body è necessario convertire il contenuto in JSON 
 app.use(express.json());
 
+
+// ------------------------------------
 // Risorse Statiche - CSS Bootstrap
+// ------------------------------------
 app.use(express.static(path.join(__dirname, 'node_modules', 'bootstrap', 'dist')));
 
-
+// ------------------------------------
+// Override Method
+// ------------------------------------
 app.use(methodOverride(function (req, res) {
     if (req.body && typeof req.body === 'object' && '_method' in req.body) {
       // look in urlencoded POST bodies and delete it
@@ -51,25 +82,52 @@ app.use(methodOverride(function (req, res) {
     }
 }))
 
+// ------------------------------------
+// Express-session - config session
+// ------------------------------------
+const MAX_AGE = process.env.MAX_AGE || 60*60*1000; // 60 minuti, 60 secondi, 1000 secondi
+const SECRET = process.env.SECRET || 'Our beautiful secrete';
+const DEFAULT_ENV = process.env.DEFAULT_ENV || 'development';
+app.use(session({
+        cookie: {
+            maxAge: MAX_AGE,            
+            secure: DEFAULT_ENV === 'production'
+        },
+        secret: SECRET,
+        resave: false,
+        saveUninitialized: false,
+    })
+);
+
+// ------------------------------------
+// Flash - passare dati da una pagina all'altra
+// ------------------------------------
+// inserisco flash nella request
+app.use(flash());
+
+
+// ------------------------------------
+// MIDDLEWARE per testare se funzionano le sessioni
+// ------------------------------------
+app.use((req, res, next)=>{
+    req.session.userId = 1;
+    next();
+})
+
+// ------------------------------------
 // ROUTES
-// api CRUD Todos
+// ------------------------------------
+// API CRUD Todos
 app.use('/api/todos', todosRoutes);
 
-// api CRUD Lists
+// API CRUD Lists
 app.use('/api/lists', listsRoutes);
 
 
 // Per non creare delle costanti, uso app.use con require
-
 // per visualizza tutte le liste sia per '/lists' che per '/' passo una ARRAY di match
 app.use(['/lists', '/'], require('./routes/lists'))
-
 app.use('/todos', require('./routes/todos'))
 
-// LISTA di LISTE
-// app.use('/lists', require('./routes/lists'))
-// app.use('/', (req, res) => {
-//     res.render('index')
-// });
 
 module.exports = app;

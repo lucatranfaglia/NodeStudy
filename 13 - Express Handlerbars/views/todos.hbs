@@ -6,6 +6,24 @@
     {{list.name}}
 </h2>
 
+{{#if errors}}
+    {{#each errors}}
+        <div class="alert alert-danger">
+            {{this}}            
+        </div>        
+    {{/each}}
+{{/if}}
+
+{{#if messages}}
+    {{#each messages}}
+        <div class="alert alert-success">
+            {{this}}
+            successo
+        </div>        
+    {{/each}}
+{{/if}}
+
+
 {{#if todos}}
 
 <ul>

@@ -2,6 +2,17 @@
     Page Lists list
 </h1>
 
+{{#if messages}}
+    {{#each messages}}
+        <div class="alert alert-success">{{this}}</div>
+    {{/each}}
+{{/if}}
+{{#if errors_m}}
+    {{#each errors_m}}
+        <div class="alert alert-danger">{{this}}</div>
+    {{/each}}
+{{/if}}
+
 <div class="container">
     {{!-- HELPER hi handlebars --}}
 
@@ -56,7 +67,6 @@
             <div class="col-2 d-flex justify-content-center align-items-center">
                 <span class="badge badge-primary badge-pill">
                     {{this.dataValues.nTodos}}
-
                 </span>
             </div>
             <div class="col-2 d-flex justify-content-center align-items-center">

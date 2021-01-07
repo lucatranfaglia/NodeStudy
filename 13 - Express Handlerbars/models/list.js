@@ -27,6 +27,15 @@ module.exports = (sequelize, DataTypes) => {
     name: {
       type:DataTypes.STRING,
       allowNull: false,
+      validate: {
+        notEmpty: {
+          msg: "Column name cannot be empty"
+        },
+        len: {
+          args: [ 6, 255],
+          msg: 'Name length must be betweeen 6 and 255'
+        }
+      }
     },
     userId: {
       type: DataTypes.BIGINT,

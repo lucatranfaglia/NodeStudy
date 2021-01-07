@@ -24,8 +24,10 @@ Popola nel db utenti fake
 - sequelize-cli
 - express
 - express-handlebars
+- express-session
 - bootstrap
 - method-override
+- connect-flash (scrive nella session)
 
 
 # Sviluppo dei motori di template per Express
@@ -120,6 +122,27 @@ Controllers
 
         };
 
+# Sequelize Validation
+
+Models
+
+    name: {
+        type:DataTypes.STRING,
+        allowNull: false,
+        validate: {
+            // non deve essere vuoto
+            notEmpty: {
+                msg: "Column name cannot be empty"
+            },
+            // deve essere lungo dai 6 ai 255 caratteri
+            len: {
+                args: [ 6, 255],
+                msg: 'Name length must be betweeen 6 and 255'
+            }
+        }
+    },
+
+
 # handlebars
 
 file .hbs
@@ -171,3 +194,22 @@ file navheader.hbs
 
 
         <button onclick="this.parentNode.q.value=''">Reset</button>
+
+
+# Session
+
+salvare i dati da una richiesta e l'altra. La Session è un'area del server dove vengono ad imagazzinare i dati, può essere in memoria, nel file system, in un database, viene identificata direttamente tra il browser e il server con un cookie
+
+
+# MIDDLEWARE 
+
+Alla creazione di un middleware è necessario che ci sia la funzione NEXT, perché altrimenti la response rimane appesa e qeuindi l'app rimane in loading
+
+    app.use((req, res, next)=>{
+        req.session.userId = 1;
+        next();
+    })
+
+Inserisco flash nella request
+    
+    app.use(flash());

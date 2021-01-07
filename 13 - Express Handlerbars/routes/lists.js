@@ -7,23 +7,26 @@ const router = express.Router();
 const {getLists, getListById, getUserByList, deleteListById, addList, updateList} = require('../controllers/listsController');
 const {getTodosByListId} = require('../controllers/todosController');
 
-router.get('/', async (req, res)=>{
+router.get('/', async (req, res)=>{    
     try {
-        // req.query:  { q: 'asdad' }
-        
+        // req.query:  { q: 'asdad', error: 'Error...' }
         const qSearch = req.query;
         
-        console.log("qSearch: ", qSearch);
+        
         const result = await getLists(qSearch);
         
         res.render('index', {
             lists: result, 
             showBackButton: false,
-            queryVar : qSearch.q
+            queryVar : qSearch.q,
+            errors: req.flash('errors'),            
+            messages: req.flash('messages')
         });
     } 
     catch (error) {
-        res.status(500).send(error.toString());
+        console.log("Error:", error);
+        req.flash('errors', error.errors.map(el => el.message));        
+        res.redirect('/');
     }
 })
 
@@ -34,7 +37,8 @@ router.get('/:listId([0-9]+)', async (req, res)=>{
         res.render('lists', {list: result});
     } 
     catch (error) {
-        res.status(500).send(error.toString());
+        req.flash('errors', error.errors.map(el => el.message));        
+        res.redirect('/');
     }
 })
 
@@ -47,33 +51,39 @@ router.get('/:listId([0-9]+)/todos', async (req, res)=>{
         res.render('todos', {todos: todos_result, list: list_result });
     } 
     catch (error) {
-        res.status(500).send(error.toString());
+        req.flash('errors', error.errors.map(el => el.message));        
+        res.redirect('/');
     }
 })
 
-// Modifico la lista listId
+// vado alla pagina
 router.get('/:listId([0-9]+)/edit', async (req, res)=>{
     try {
         const listId = req.params.listId;
         const listObj = await getListById(listId);
         const result = listObj.dataValues;
+        
+        // Gestione errori e messaggi
+        const errors = req.flash('errors');
+        const messages = req.flash('messages');
         // res.render('list/edit', {list: result});
 
-        res.render('list/edit', {...result});
+        res.render('list/edit', {...result, errors, messages});
     } 
     catch (error) {
-        res.status(500).send(error.toString());
+        req.flash('errors', error.errors.map(el => el.message));        
+        res.redirect('/'+req.params.listId+'/edit');
     }
 })
 
-// creo una nuova lista
+// redirect into page newList 
 router.get('/new', async (req, res)=>{
-    try {
-        
+    try {        
         res.render('list/new', {showBackButton: true});
     } 
     catch (error) {
-        res.status(500).send(error.toString());
+        req.flash('errors', error.errors.map(el => el.message));        
+        res.redirect('/new');
     }
 })
 
@@ -82,25 +92,31 @@ router.get('/:userId([0-9]+)/user', async (req, res)=>{
     try {
         const userId = req.params.userId;
         const result = await getUserByList(userId);
-        res.render('users', {user: result});
+        res.render('users', {user: result});        
     } 
     catch (error) {
-        res.status(500).send(error.toString());
+        req.flash('errors', error.errors.map(el => el.message));        
+        res.redirect('/'+req.params.userId+'/user');
     }
 })
 
+
+// ----------------------------------------------------------------
+// CRUD
+// ----------------------------------------------------------------
 
 // Cancello la lista
 router.delete('/:listId([0-9]+)', async (req, res)=>{
     try {
         const listId = req.params.listId;
         const result = await deleteListById(listId);
-
+        req.flash('messages', 'List delete correctly.');
         // res.status(result ? 200 : 404).json(result ? result : "List not found!");
         res.redirect('/');
     } 
     catch (error) {
-        res.status(500).send(error.toString());
+        req.flash('errors', error.errors.map(el => el.message));        
+        res.redirect('/');
     }
 })
 
@@ -111,12 +127,16 @@ router.patch('/:listId([0-9]+)', async (req, res)=>{
         const listId = req.params.listId;
         const name = req.body.list_name;
         const result = await updateList(listId, name);
+        req.flash('messages', 'List patch correctly.' );
 
-        // res.status(result ? 200 : 404).json(result ? result : "List not found!");
         res.redirect('/');
     } 
     catch (error) {
-        res.status(500).send(error.toString());
+        // Passo come paramentro il messaggio di errore tramite flash
+        req.flash('errors', error.errors.map(el => el.message));        
+        // res.redirect('/');
+        res.redirect('/');
+        
     }
 })
 
@@ -127,11 +147,18 @@ router.post('/', async (req, res)=>{
         const name = req.body.list_name;
         const result = await addList(name);
 
-        // res.status(result ? 200 : 404).json(result ? result : "List not found!");
+        // flash (key, value)
+        req.flash('messages', 'List added correctly.' );
+
         res.redirect('/');
     } 
     catch (error) {
-        res.status(500).send(error.toString());
+        // Passo come paramentro il messaggio di errore tramite flash
+        req.flash('errors', error.errors.map(el => el.message));
+
+        // Passo nella res.query.q l'errore
+        // res.redirect('/?error='+error.toString());        
+        res.redirect('/');
     }
 })
 
