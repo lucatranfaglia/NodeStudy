@@ -27,6 +27,7 @@ const methodOverride = require('method-override');
 // ------------------------------------
 const todosRoutes = require('./routes/api/todos');
 const listsRoutes = require('./routes/api/lists');
+const authRoutes = require('./routes/auth');
 
 
 // creo un'istanza di express
@@ -79,6 +80,9 @@ app.use('/bootstrap', express.static(path.join(__dirname, 'node_modules', 'boots
 // sweetalert2 - alias del percorso '/sweetalert2'
 app.use('/sweetalert2', express.static(path.join(__dirname, 'node_modules', 'sweetalert2', 'dist')));
 
+// axios - alias percorso '/axios'
+app.use('/axios', express.static(path.join(__dirname, 'node_modules', 'axios', 'dist')));
+
 // ------------------------------------
 // Override Method
 // ------------------------------------
@@ -124,7 +128,7 @@ app.use((req, res, next)=>{
 })
 
 // ------------------------------------
-// ROUTES
+// ROUTES Management
 // ------------------------------------
 // API CRUD Todos
 app.use('/api/todos', todosRoutes);
@@ -137,6 +141,7 @@ app.use('/api/lists', listsRoutes);
 // per visualizza tutte le liste sia per '/lists' che per '/' passo una ARRAY di match
 app.use(['/lists', '/'], require('./routes/lists'))
 app.use('/todos', require('./routes/todos'))
+app.use('/auth', authRoutes);
 
 
 module.exports = app;

@@ -18,7 +18,7 @@ Popola nel db utenti fake
     sequelize-cli db:seed:all
 
 # Dependences
-- bcrypt (criptare le password)
+- bcrypt (HASH criptare le password)
 - faker (genera dati finti)
 - sequelize
 - sequelize-cli
@@ -71,6 +71,15 @@ Models
         //un model List appartiene al model User
 
         list.belongsTo(models.User);
+
+
+    hooks - cripta la password
+
+        hooks: {
+            beforeCreate: (user) => {
+                user.password = bc.hashSync(user.password, 12);
+            },
+        },
 
 Controllers
     

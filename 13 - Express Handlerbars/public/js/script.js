@@ -1,5 +1,3 @@
-const { default: Swal } = require("sweetalert2");
-
 document.addEventListener("DOMContentLoaded", ()=>{
     // alerts : Collection di element
     const alerts = document.querySelectorAll('.alert');

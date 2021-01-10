@@ -1,4 +1,7 @@
 'use strict';
+
+const bc = require('bcrypt');
+
 const {
   Model
 } = require('sequelize');
@@ -11,7 +14,8 @@ module.exports = (sequelize, DataTypes) => {
      */
     
     static associate(models) {
-      // define association here      
+      // define association here  
+      user.hasMany(models.List)
     }
   };
   user.init({
@@ -23,18 +27,53 @@ module.exports = (sequelize, DataTypes) => {
     },      
     name: {
       type: DataTypes.STRING,
-      allowNull: false,
+      allowNull: false,    
+      validate: {
+        notEmpty: {
+          msg: "Column name cannot be empty"
+        },
+        len: {
+          args: [ 6, 255],
+          msg: 'Name length must be betweeen 6 and 255'
+        }
+      }
     },
     email: {
       type: DataTypes.STRING,
       allowNull: false,
-      unique: true,
+      unique: {
+        args: true,
+        msg: 'Email already taken!'
+      },
+      validate: {
+        notEmpty: {
+          msg: "Column name cannot be empty"
+        },
+        isEmail: {
+          msg: 'Plaese add a valid email'
+        }
+      }
     },
     password: {
       type: DataTypes.STRING,
       allowNull: false,
+      validate: {
+        notEmpty: {
+          msg: "Column name cannot be empty"
+        },
+        len: {
+          args: [ 6, 255],
+          msg: 'Name length must be betweeen 6 and 255'
+        }
+      }
     }
-  }, {
+  }, 
+  {
+    hooks: {
+      beforeCreate: (user) => {
+        user.password = bc.hashSync(user.password, 12);
+      },
+    },
     sequelize,
     modelName: 'User',
   });
