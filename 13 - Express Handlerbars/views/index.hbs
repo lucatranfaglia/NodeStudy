@@ -75,17 +75,16 @@
                     <i class="fa fa-edit"></i>
                 </a>
                 
-                <form method="post" action="/lists/{{this.id}}">
+                <form method="post" action="/lists/{{this.id}}" name="form{{this.id}}">
                     {{!-- Server per fare riconoscere il metodo DELETE --}}
                     <input type="hidden" name="_method" value="DELETE">
 
                     {{!-- tooltip = title="DELETE LIST" --}}
-                    <button class="btn btn-danger" title="DELETE LIST">
+                    <button class="btn btn-danger" title="DELETE LIST" type="button" onclick="showConfirmMsg('delete list', '', 'form{{this.id}}')">
                         <i class="fa fa-trash-alt"></i>
                     </button>        
                 </form>        
             </div>
-            
         </div>
     {{/each}}
 </div>

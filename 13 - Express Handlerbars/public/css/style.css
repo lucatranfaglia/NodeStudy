@@ -1,0 +1,4 @@
+/* Class modal alerts */
+.alert {
+    transition: opacity 4s;
+}

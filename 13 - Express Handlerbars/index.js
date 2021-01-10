@@ -64,11 +64,20 @@ app.use(express.urlencoded({extended: true}));
 // POSTMAN POST raw: per la lettura del dato nel req.body è necessario convertire il contenuto in JSON 
 app.use(express.json());
 
+// ------------------------------------
+// ------------------------------------
+// Risorse Statiche (priorità dall'alto verso il basso)
+// ------------------------------------
+// ------------------------------------
 
-// ------------------------------------
-// Risorse Statiche - CSS Bootstrap
-// ------------------------------------
-app.use(express.static(path.join(__dirname, 'node_modules', 'bootstrap', 'dist')));
+// public (js & css) - alias del percorso '/public'
+app.use('/public', express.static(path.join(__dirname, 'public')));
+
+// CSS Bootstrap - (rinominiamo il percorso con /bootstrap)
+app.use('/bootstrap', express.static(path.join(__dirname, 'node_modules', 'bootstrap', 'dist')));
+
+// sweetalert2 - alias del percorso '/sweetalert2'
+app.use('/sweetalert2', express.static(path.join(__dirname, 'node_modules', 'sweetalert2', 'dist')));
 
 // ------------------------------------
 // Override Method

@@ -29,7 +29,7 @@
                     <input type="text" name="list_name" value="{{list.name}}">
                 --}}
                 {{!-- res.render('list/edit', {...result}); --}}
-                <input class="form-control" type="text" name="list_name" value="{{name}}"> 
+                <input class="form-control" type="text" name="list_name" value="{{name}}" minlength="6" required> 
             </div>
             <div class="col-md-4 form-group">
                 <button class="btn btn-warning" title="Update" onclick="updateList(this); return false;" value="UPDATE">Update</button>
@@ -41,16 +41,18 @@
     </form>
 </div>
 <script>
-    {{!-- DELETE || PATCH --}}
+    
+    // DELETE || PATCH
     function updateList(btn){
         const method = document.getElementById('method');
         const form = document.getElementById('form_list');
 
-        btn.value==='DELETE' ? method.value = 'DELETE' : method.value = 'PATCH';
+        method.value = btn.value==='DELETE' ? 'DELETE' : 'PATCH';
 
-        {{!-- document.forms.list.submit(); --}}
-        form.submit();
+        method.value === 'PATCH' ? form.submit() : showConfirmMsg('delete list', '', form.name)
+
+        // alternativa ad : document.forms.list.submit();
+        // form.submit();
         console.log("Value", btn.value);
     }
-
 </script>

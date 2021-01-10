@@ -28,6 +28,7 @@ Popola nel db utenti fake
 - bootstrap
 - method-override
 - connect-flash (scrive nella session)
+- sweetalert2 (modali)
 
 
 # Sviluppo dei motori di template per Express
@@ -213,3 +214,8 @@ Alla creazione di un middleware è necessario che ci sia la funzione NEXT, perch
 Inserisco flash nella request
     
     app.use(flash());
+
+
+# JAVASCRIPT 
+
+    <button class="btn btn-danger" title="DELETE LIST" onclick="return confirm('Are you sure you want to delete this items?')">

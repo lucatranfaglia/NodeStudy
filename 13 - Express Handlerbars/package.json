@@ -34,7 +34,8 @@
     "method-override": "^3.0.0",
     "morgan": "^1.10.0",
     "mysql2": "^2.2.5",
-    "sequelize": "^6.3.5"
+    "sequelize": "^6.3.5",
+    "sweetalert2": "^10.13.0"
   },
   "devDependencies": {
     "sequelize-cli": "^6.2.0"
