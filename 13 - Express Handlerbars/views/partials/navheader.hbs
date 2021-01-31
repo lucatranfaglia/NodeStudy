@@ -17,7 +17,22 @@
             <li class="nav-item">
                 <a class="nav-link" href="/lists/new">New Lists</a>
             </li>
-        
+            {{#if user}}
+                <li class="nav-item">
+                    <a class="nav-link">{{user.name}}</a>
+                    
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/auth/logout">Logout</a>
+                </li>
+                {{else}}
+                <li class="nav-item">
+                    <a class="nav-link" href="/auth/login">Login</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/auth/signup">Signup</a>
+                </li>
+            {{/if}}
         </ul>
         {{!-- aggiungerà alla rotta corrente "?q=TestoInseritoInInput" --}}
         <form class="form-inline mt-2 mt-md-0" method="get" action="?">

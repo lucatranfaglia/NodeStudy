@@ -10,7 +10,9 @@
   </head>
 
   <body>
-    {{> navheader title="Hello" pQuery=queryVar}}
+    <!-- NavHeader: passo come parametro THIS per ottenere le info -->
+    {{!-- {{> navheader title="Hello" pQuery=queryVar this}} --}}
+    {{> navheader this}}
 
     <!-- Begin page content -->
     <main role="main" class="container">

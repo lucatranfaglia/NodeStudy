@@ -69,4 +69,24 @@ router.get('/login', async (req, res)=>{
     }
 })
 
+
+/**
+ * Logout utente
+ * 
+ * @params req
+ * @param res
+ */
+router.get('/logout', async (req, res)=>{    
+    try {
+        req.session.destroy(()=>{
+            res.redirect('/auth/login');
+        })        
+    } 
+    catch (error) {
+        console.log("Error:", error);
+        req.flash('errors', error.errors.map(el => el.message));        
+        res.redirect('/');
+    }
+})
+
 module.exports = router;

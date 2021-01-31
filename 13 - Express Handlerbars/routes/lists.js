@@ -19,6 +19,7 @@ router.get('/', async (req, res)=>{
             lists: result, 
             showBackButton: false,
             queryVar : qSearch.q,
+            user: req.session.user,
             errors: req.flash('errors'),            
             messages: req.flash('messages')
         });
@@ -34,7 +35,10 @@ router.get('/:listId([0-9]+)', async (req, res)=>{
     try {
         const listId = req.params.listId;
         const result = await getListById(listId);
-        res.render('lists', {list: result});
+        res.render('lists', {
+            user: req.session.user,
+            list: result
+        });
     } 
     catch (error) {
         req.flash('errors', error.errors.map(el => el.message));        
@@ -48,7 +52,11 @@ router.get('/:listId([0-9]+)/todos', async (req, res)=>{
         const listId = req.params.listId;
         const list_result = await getListById(listId);
         const todos_result = await getTodosByListId(listId);
-        res.render('todos', {todos: todos_result, list: list_result });
+        res.render('todos', {
+            user: req.session.user,
+            todos: todos_result, 
+            list: list_result
+        });
     } 
     catch (error) {
         req.flash('errors', error.errors.map(el => el.message));        
@@ -68,7 +76,12 @@ router.get('/:listId([0-9]+)/edit', async (req, res)=>{
         const messages = req.flash('messages');
         // res.render('list/edit', {list: result});
 
-        res.render('list/edit', {...result, errors, messages});
+        res.render('list/edit', {
+            ...result, 
+            errors, 
+            messages,
+            user: req.session.user
+        });
     } 
     catch (error) {
         req.flash('errors', error.errors.map(el => el.message));        
@@ -79,7 +92,10 @@ router.get('/:listId([0-9]+)/edit', async (req, res)=>{
 // redirect into page newList 
 router.get('/new', async (req, res)=>{
     try {        
-        res.render('list/new', {showBackButton: true});
+        res.render('list/new', {
+            user: req.session.user,
+            showBackButton: true
+        });
     } 
     catch (error) {
         req.flash('errors', error.errors.map(el => el.message));        
