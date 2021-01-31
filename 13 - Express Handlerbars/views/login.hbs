@@ -1,28 +1,55 @@
-<h1>
-    Todo List Login
-</h1>
-<form action="/auth/register" method="post" onsubmit="registerUser(this); return false;">
-    <div class="form-group">
-        <label for="name">Name of the</label>
-        <input type="text" class="form-control" id="name" name="name" placeholder="Enter Name" minlength="6" required >
-    </div>
-    <div class="form-group">
-        <label for="email">Email address</label>
-        <input type="email" class="form-control" id="email" name="email" placeholder="Enter Email" required>
-    </div>
-    <div class="form-group">
-        <label for="password">Password</label>
-        <input type="password" class="form-control" id="password" name="password" placeholder="Enter Password" required>
-    </div>
-    <div class="form-group form-check">
-        <input type="checkbox" class="form-check-input" id="exampleCheck1">
-        <label class="form-check-label" for="exampleCheck1">Check me out</label>
-    </div>
-    <div class="form-group">
-        <button type="submit" class="btn btn-primary">Submit</button>
-    </div>
-</form>
+<div class="row">
+    <div class="offset-md-3 col-md-6">
+        <h1>
+            TODO LIST LOGIN
+        </h1>
+        <form action="/auth/register" method="post" onsubmit="registerUser(this); return false;">
 
+            {{#if signup}}
+
+                <div class="form-group">
+                    <label for="name">Name</label>
+                    <input type="text" class="form-control" id="name" name="name" placeholder="Enter Name" minlength="6" required >
+                </div>
+
+            {{/if}}
+            <div class="form-group">
+                <label for="email">Email address</label>
+                <input type="email" class="form-control" id="email" name="email" placeholder="Enter Email" required>
+            </div>
+            <div class="form-group">
+                <label for="password">Password</label>
+                <input type="password" class="form-control" id="password" name="password" placeholder="Enter Password" required>
+            </div>
+            
+            <div class="form-group text-center">
+                <button type="submit" class="btn btn-primary">
+                    {{#if signup}}
+                            REGISTER
+                    {{else}}        
+                        LOGIN
+                    {{/if}}   
+                </button>                        
+                
+            </div>
+
+            <div class="form-group text-center">
+                {{#if signup}}
+                    Already registered?
+                    <a href="/auth/login">
+                        LOGIN
+                    </a>            
+                {{else}}
+                    Not registered?
+                    <a href="/auth/signup">
+                        SIGNUP
+                    </a>
+                {{/if}}   
+                
+            </div>
+        </form>
+    </div>
+</div>
 
 <script type="text/javascript">
     // parametro: form
@@ -42,10 +69,23 @@
             });
 
             console.log("res: ",res.data)
+            Swal.fire({
+                type: "success",
+                text: "User successfully registered",
+                icon:'success'
+            })
+            .then(()=>{
+                location.href='/';
+            })
         }
         catch(error){
-            console.log("res: ",error.response.data.message)
-            Swal.fire(error.message)
+            console.log("res: ",error)
+            // SweerAlert2
+            Swal.fire({
+                title: "Error",
+                text: error,
+                icon:'error'
+            })
         }
     }
 </script>

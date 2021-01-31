@@ -24,8 +24,9 @@
             {{!-- value="{{q}}" => passato a parametro tramite il file main.hbs --}}
             <input class="form-control mr-sm-2" type="text" placeholder="Search" aria-label="Search" name="q" value="{{pQuery}}">
             <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
-            <button class="btn btn-default my-2 my-sm-0" onclick="this.parentNode.q.value=''">Reset</button>
+            <button class="btn btn-outline-secondary my-2 my-sm-0" onclick="this.parentNode.q.value=''">Reset</button>
         </form>
+        <a class="btn btn-outline-primary my-2 my-sm-0" href="/auth/signup">Login</a>
     </div>
     </nav>
 </header>

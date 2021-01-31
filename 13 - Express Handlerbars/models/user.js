@@ -69,6 +69,7 @@ module.exports = (sequelize, DataTypes) => {
     }
   }, 
   {
+    // hooks - cripta la password
     hooks: {
       beforeCreate: (user) => {
         user.password = bc.hashSync(user.password, 12);

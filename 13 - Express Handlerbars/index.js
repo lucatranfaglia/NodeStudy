@@ -5,22 +5,25 @@ const path = require('path');
 // Express
 // ------------------------------------
 const express = require('express');
+// creo un'istanza di express
+const app = express();
 
-// Express-handlebars - Template Engine
-const ehb = require('express-handlebars');
-
-// Express-session - Gestione delle sessioni
-const session = require('express-session');
 
 // ------------------------------------
-// connect-flash - 
+// Express-handlebars - Template Engine
+// ------------------------------------
+const ehb = require('express-handlebars');
+
+// ------------------------------------
+// FLASH: connect-flash
 // ------------------------------------
 const flash = require('connect-flash');
 
 // ------------------------------------
-// method-override - per lavorare con metodi DELETE, PATH
+// MIDDLEWARE
 // ------------------------------------
-const methodOverride = require('method-override');
+const {overrideMethod, redirectHome, redirectLogin, setSession} = require('./middleware');
+
 
 // ------------------------------------
 // Routes
@@ -28,10 +31,6 @@ const methodOverride = require('method-override');
 const todosRoutes = require('./routes/api/todos');
 const listsRoutes = require('./routes/api/lists');
 const authRoutes = require('./routes/auth');
-
-
-// creo un'istanza di express
-const app = express();
 
 // ------------------------------------
 // TEMPLATE Engine HandleBars
@@ -65,12 +64,11 @@ app.use(express.urlencoded({extended: true}));
 // POSTMAN POST raw: per la lettura del dato nel req.body è necessario convertire il contenuto in JSON 
 app.use(express.json());
 
-// ------------------------------------
-// ------------------------------------
+// ------------------------------------------------------------------------
+// ------------------------------------------------------------------------
 // Risorse Statiche (priorità dall'alto verso il basso)
-// ------------------------------------
-// ------------------------------------
-
+// ------------------------------------------------------------------------
+// ------------------------------------------------------------------------
 // public (js & css) - alias del percorso '/public'
 app.use('/public', express.static(path.join(__dirname, 'public')));
 
@@ -83,34 +81,22 @@ app.use('/sweetalert2', express.static(path.join(__dirname, 'node_modules', 'swe
 // axios - alias percorso '/axios'
 app.use('/axios', express.static(path.join(__dirname, 'node_modules', 'axios', 'dist')));
 
+
+// ------------------------------------------------------------------------
+// ------------------------------------------------------------------------
+// MIDDLEWARE 
+// ------------------------------------------------------------------------
+// ------------------------------------------------------------------------
+
 // ------------------------------------
 // Override Method
 // ------------------------------------
-app.use(methodOverride(function (req, res) {
-    if (req.body && typeof req.body === 'object' && '_method' in req.body) {
-      // look in urlencoded POST bodies and delete it
-      var method = req.body._method
-      delete req.body._method
-      return method
-    }
-}))
+app.use(overrideMethod())
 
 // ------------------------------------
-// Express-session - config session
+// Express-session - config session (middleware)
 // ------------------------------------
-const MAX_AGE = process.env.MAX_AGE || 60*60*1000; // 60 minuti, 60 secondi, 1000 secondi
-const SECRET = process.env.SECRET || 'Our beautiful secrete';
-const DEFAULT_ENV = process.env.DEFAULT_ENV || 'development';
-app.use(session({
-        cookie: {
-            maxAge: MAX_AGE,            
-            secure: DEFAULT_ENV === 'production'
-        },
-        secret: SECRET,
-        resave: false,
-        saveUninitialized: false,
-    })
-);
+app.use(setSession());
 
 // ------------------------------------
 // Flash - passare dati da una pagina all'altra
@@ -118,30 +104,27 @@ app.use(session({
 // inserisco flash nella request
 app.use(flash());
 
-
-// ------------------------------------
-// MIDDLEWARE per testare se funzionano le sessioni
-// ------------------------------------
-app.use((req, res, next)=>{
-    req.session.userId = 1;
-    next();
-})
-
-// ------------------------------------
+// ------------------------------------------------------------------------
+// ------------------------------------------------------------------------
 // ROUTES Management
-// ------------------------------------
-// API CRUD Todos
-app.use('/api/todos', todosRoutes);
+// ------------------------------------------------------------------------
+// ------------------------------------------------------------------------
+// API CRUD Todos - può accedere all'API solo se è loggato
+app.use('/api/todos', redirectLogin, todosRoutes);
 
-// API CRUD Lists
-app.use('/api/lists', listsRoutes);
+// API CRUD Lists - può accedere all'API solo se è loggato
+app.use('/api/lists', redirectLogin, listsRoutes);
 
 
-// Per non creare delle costanti, uso app.use con require
-// per visualizza tutte le liste sia per '/lists' che per '/' passo una ARRAY di match
-app.use(['/lists', '/'], require('./routes/lists'))
+// prima di portare l'utente sulla rotta /register e /signup, verifichiamo se l'utente è loggato (se è loggato va in home)
+app.use('/auth', redirectHome,  authRoutes);
+/**
+ * Per non creare delle costanti, uso app.use con require per visualizza tutte le liste sia per '/lists' che per '/' passo una ARRAY di match
+ * N.B. se non è loggato non può accedere a queste rotte
+ */
+app.use(['/lists', '/'], redirectLogin, require('./routes/lists'))
 app.use('/todos', require('./routes/todos'))
-app.use('/auth', authRoutes);
+
 
 
 module.exports = app;
