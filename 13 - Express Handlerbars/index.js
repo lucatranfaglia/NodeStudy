@@ -125,6 +125,17 @@ app.use('/auth', redirectHome,  authRoutes);
 app.use(['/lists', '/'], redirectLogin, require('./routes/lists'))
 app.use('/todos', require('./routes/todos'))
 
+/**
+ * Logout utente
+ * 
+ * @params req
+ * @param res
+ */
+app.get('/logout', async (req, res)=>{        
+    req.session.destroy(()=>{
+        res.redirect('/auth/login');
+    })           
+})
 
 
 module.exports = app;

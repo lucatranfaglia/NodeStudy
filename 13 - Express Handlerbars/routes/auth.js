@@ -4,7 +4,7 @@ const express = require('express');
 const router = express.Router();
 
 // controller con db
-const {register} = require('../controllers/authController');
+const {register, login} = require('../controllers/authController');
 
 router.get('/signup', async (req, res)=>{    
     try {
@@ -56,8 +56,7 @@ router.post('/register', async (req, res)=>{
  * @param res
  */
 router.get('/login', async (req, res)=>{    
-    try {
-        
+    try {        
         res.render('login', {
             signup: false
         });
@@ -71,22 +70,23 @@ router.get('/login', async (req, res)=>{
 
 
 /**
- * Logout utente
+ * Verifica dell'utente
  * 
  * @params req
  * @param res
  */
-router.get('/logout', async (req, res)=>{    
+router.post('/login', async (req, res)=>{    
     try {
-        req.session.destroy(()=>{
-            res.redirect('/auth/login');
-        })        
+        const {name, email, id} = await login(req.body);
+        const User = {name, email, id};
+        req.session.user = User;
+        res.status(id ? 200 : 400).json(id ? User : null);
     } 
     catch (error) {
-        console.log("Error:", error);
-        req.flash('errors', error.errors.map(el => el.message));        
-        res.redirect('/');
+        console.log("Error:", error);             
+        res.status(500).send({message: error.message});        
     }
 })
+
 
 module.exports = router;

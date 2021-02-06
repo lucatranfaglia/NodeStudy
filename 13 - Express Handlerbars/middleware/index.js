@@ -26,7 +26,8 @@ const overrideMethod = () => {
 // ------------------------------------
 // se l'utente è loggato viene rindirizzato alla Home
 const redirectHome = (req, res, next) => {
-    if(req.session.user){
+    
+    if(req.session.user && !req.path === '/auth/logout'){
         res.redirect('/');
     }
     else{
