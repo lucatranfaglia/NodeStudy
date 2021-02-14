@@ -77,4 +77,27 @@ router.patch('/:id([0-9]+)', async (req, res)=>{
     }
 })
 
+// Completed i todo
+router.patch('/:id([0-9]+)', async (req, res) =>{
+    try {
+        const id = req.params.id
+        const todo= await getTodoById(id);
+        if(!todo){
+            res.status(404).send(404, {message: 'Todo not found!'});
+        }
+
+        //  User is not authorized (utente in sessione è diverso della lista utenti)
+        if(+req.session.user.id !== +todo.List.userId){
+            res.status(403).send(403, {message: 'User is not authorized to modify this todo.'});
+        }
+        
+        // {...todo, ...req.body} : server per sovrascrivere il valore opposto a valore presente nel database (es. db todo: 1 => 0)        
+        const result = await updateTodo( id, {...todo, ...req.body});
+        
+        res.status(result[0] ? 200 : 404).json(result[0] ? result[0] : null);
+
+    } catch (error) {
+        res.status(500).send(error.toString());        
+    }
+})
 module.exports = router;

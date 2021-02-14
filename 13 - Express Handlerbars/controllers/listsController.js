@@ -14,27 +14,40 @@ const attributes = {
             'nTodos'
         ]
     ],
-    exclude: ['createdAt', 'updatedAt']
+    exclude: ['createdAt', 'userId']
 };
 
 
 // ritorna tutte le liste con i relativi utenti
 async function getLists(pars = {}){
 
+    const where = {};
+
     // search into page
-    const where = pars.q ? { 
-            name : {
-                [Op.like] : '%'+pars.q+'%'
-            },
-        } : {};
+    // const where = pars.q ? { 
+    //         name : {
+    //             [Op.like] : '%'+pars.q+'%'
+    //         },
+    //     } : {};
+
+    // filtro per query
+    if(pars.q){
+        where.name = {
+            [Op.like] : '%'+pars.q+'%'
+        };
+    }
+    // filtro per userId
+    if(pars.userId){
+        where.userId = pars.userId;
+    }
 
     return await List.findAll({
         attributes: attributes,
         subQuery: false,
+        limit: 2000,
         include: [
             // per contare quanti todos ha una lista
-            {model: Todo, attributes: []},
-            'User'
+            {model: Todo, attributes: []}
         ],
         group: ['List.id'],
         order: [['createdAt', 'DESC']],
@@ -49,17 +62,18 @@ async function getListById(listId){
     if(listId){
 
         // Find by Primary Key
-        return await List.findByPk(listId, 
-            {
-                attributes: attributes,
-                include: [
-                    // per contare quanti todos ha una lista
-                    {model: Todo, attributes: []},
-                    'User'
-                ],
-                order: [['createdAt', 'DESC']]                
-            }
-        );
+        return await List.findByPk(listId);
+        // return await List.findByPk(listId, 
+        //     {
+        //         attributes: attributes,
+        //         include: [
+        //             // per contare quanti todos ha una lista
+        //             {model: Todo, attributes: []},
+        //             'User'
+        //         ],
+        //         order: [['createdAt', 'DESC']]                
+        //     }
+        // );
 
 
         // return await List.findAll({
@@ -109,12 +123,12 @@ async function deleteListById(listId){
     return null;
 }
 
-async function addList(listName){
+async function addList(listName, userId){
     if(listName){
         
         // const [result, ] = await pool.query("INSERT INTO lists (name, user_id) VALUES (?, ?)",[name, 1]);  // return Promise [results, fields]
         return await List.create({
-            userId:1,
+            userId:userId,
             name:listName
         })
         

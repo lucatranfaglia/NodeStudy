@@ -12,8 +12,8 @@ router.get('/', async (req, res)=>{
         // req.query:  { q: 'asdad', error: 'Error...' }
         const qSearch = req.query;
         
-        
-        const result = await getLists(qSearch);
+        const { id } = req.session.user;
+        const result = await getLists({qSearch, userId:id });
         
         res.render('index', {
             lists: result, 
@@ -50,8 +50,12 @@ router.get('/:listId([0-9]+)', async (req, res)=>{
 router.get('/:listId([0-9]+)/todos', async (req, res)=>{
     try {
         const listId = req.params.listId;
+        
+        // verifico che i todo siano completati 
+        let completed = req.query.completed ? req.query.completed : 0;        
         const list_result = await getListById(listId);
-        const todos_result = await getTodosByListId(listId);
+        // Vengono visualizzati solo i todo da completare 
+        const todos_result = await getTodosByListId(listId, completed);
         res.render('todos', {
             user: req.session.user,
             todos: todos_result, 
@@ -160,8 +164,14 @@ router.patch('/:listId([0-9]+)', async (req, res)=>{
 // creo una nuova lista
 router.post('/', async (req, res)=>{
     try {
-        const name = req.body.list_name;
-        const result = await addList(name);
+        const name = req.req.body.list_name;
+        const id = req.session.user.id;
+        if(id!='' && name!=''){
+            const result = await addList(name, id);
+        }
+        else{
+            throw new Error ('data not found!');
+        }
 
         // flash (key, value)
         req.flash('messages', 'List added correctly.' );
@@ -170,7 +180,7 @@ router.post('/', async (req, res)=>{
     } 
     catch (error) {
         // Passo come paramentro il messaggio di errore tramite flash
-        req.flash('errors', error.errors.map(el => el.message));
+        req.flash('errors', error.errors);
 
         // Passo nella res.query.q l'errore
         // res.redirect('/?error='+error.toString());        
