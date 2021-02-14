@@ -1,32 +1,61 @@
 const Todo = require('../models').Todo;
+const List = require('../models').List;
 
 // colonne che si voglio visualizzare
 const attributes = ['id', 'todo', 'listID', 'createdAt', 'completed'];
 
 // ritorna tutti i todo
-async function getTodos(){
+async function getTodos(pars = {}){
     // const [result, ] = await pool.query("SELECT * FROM todos");  // return Promise [results, fields]    
+    const where = {};
+    
+    // filtro per query
+    if(pars.q){
+        where.name = {
+            [Op.like] : '%'+pars.q+'%'
+        };
+    }
+    // filtro per userId
+    if(pars.completed !== undefined){
+        where.completed = pars.completed;
+    }
+
+
+    const whereList = {};
+    if(pars.userId){
+        whereList.userId = pars.userId;
+    }
+
     return await Todo.findAll({
-        include : ['List'],
-        attributes:attributes,
-        limit:20
-    });
+            include : [
+                {
+                    model: List,
+                    where: whereList
+                }
+            ],
+            attributes:attributes,
+            limit:20,
+            where:where
+        } 
+    );
 }
 // ritorna i todo con filtro
-async function getTodoById(account_id){
-    if(account_id){
+async function getTodoById(todo_id){
+    if(todo_id){
         // const [result, ] = await pool.query("SELECT * FROM todos WHERE id=?",[account_id]);  // return Promise [results, fields]
-        // return await Todo.findAll({
-        //     attributes: attributes,
-        //     where: {
-        //         id: account_id
-        //     }            
-        // });
-
-        return await Todo.findByPk(id, {
+        return await Todo.findAll({
+            include : ['List'],
             attributes: attributes,
-            include : ['List']
+            where: {
+                id: todo_id,
+        
+            }            
         });
+
+        // return await Todo.findByPk(todo_id, {
+        //     attributes: attributes,
+        //     include : ['List']
+        // });
     }
     return null
 }
@@ -77,19 +106,17 @@ async function deleteTodoById(account_id){
 }
 
 async function addTodo({todo, completed, listId}){
-    const newTodo = {todo, completed, listId};
-    if(newTodo){
-        completed===true ? 1 : 0;
-        // completed = completed || 0;
-
-        // const [result, ] = await pool.query("INSERT INTO todos (todo, completed, listId) VALUES (?, ?, ?)",[todo, completed, listId]);  // return Promise [results, fields]
-        return await List.create({
-            todo:todo,
-            completed:completed,
-            listId: listId
-        })
+    
+    if(completed===undefined || completed==null){
+        completed = 0;
     }
-    return null;
+    
+    // const [result, ] = await pool.query("INSERT INTO todos (todo, completed, listId) VALUES (?, ?, ?)",[todo, completed, listId]);  // return Promise [results, fields]
+    return await Todo.create({
+        todo:todo,
+        completed:completed,
+        listId: listId
+    })   
 }
 
 

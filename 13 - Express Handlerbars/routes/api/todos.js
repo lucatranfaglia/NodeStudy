@@ -61,6 +61,7 @@ router.post('/', async (req, res)=>{
         res.status(result ? 200 : 404).json( result ? result : null);
     } 
     catch (error) {
+        console.log("post result: ", error);
         res.status(500).send(error.toString());
     }
 })
@@ -97,6 +98,7 @@ router.patch('/:id([0-9]+)', async (req, res) =>{
         res.status(result[0] ? 200 : 404).json(result[0] ? result[0] : null);
 
     } catch (error) {
+        console.log("error patch todos/:id: ", error)
         res.status(500).send(error.toString());        
     }
 })

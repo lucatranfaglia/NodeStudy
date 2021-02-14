@@ -59,7 +59,8 @@ router.get('/:listId([0-9]+)/todos', async (req, res)=>{
         res.render('todos', {
             user: req.session.user,
             todos: todos_result, 
-            list: list_result
+            list: list_result,
+            listId: listId
         });
     } 
     catch (error) {
