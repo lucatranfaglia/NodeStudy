@@ -2,10 +2,16 @@ const methodOverride = require('method-override');
 
 // Express-session - Gestione delle sessioni
 const session = require('express-session');
+
+// Salvo la sessione su un file
+const FileStore = require('session-file-store')(session);
+
 const MAX_AGE = process.env.MAX_AGE || 60*60*1000; // 60 minuti, 60 secondi, 1000 secondi
 const SECRET = process.env.SECRET || 'Our beautiful secrete';
 const DEFAULT_ENV = process.env.DEFAULT_ENV || 'development';
 
+
+const fileStoreOptions = {};
 
 // ------------------------------------
 // OVERRIDE: method-override - per lavorare con metodi DELETE, PATH
@@ -50,6 +56,7 @@ const redirectLogin = (req, res, next) => {
 // ------------------------------------
 const setSession = () => {
     return session({
+        store: new FileStore(fileStoreOptions),
         cookie: {
             maxAge: MAX_AGE,            
             secure: DEFAULT_ENV === 'production'

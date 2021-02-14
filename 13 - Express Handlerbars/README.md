@@ -29,6 +29,7 @@ Popola nel db utenti fake
 - method-override
 - connect-flash (scrive nella session)
 - sweetalert2 (modali)
+- session-file-store (salva la sesione su un file)
 
 
 # Sviluppo dei motori di template per Express

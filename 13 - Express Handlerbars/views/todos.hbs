@@ -59,10 +59,10 @@
     async function completeTodo(id, completed){
         try{
             
-            if(completed == true){
+            if(completed == true || completed == "true" || completed === true || completed === "true"){
                 completed = 1;
             }
-            else if(completed == false){
+            else  if(completed == false || completed == "false" || completed === false || completed === "false"){
                 completed = 0;
             }
             console.log("func click: ", completed, id)
