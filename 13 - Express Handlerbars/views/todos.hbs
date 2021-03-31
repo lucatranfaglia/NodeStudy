@@ -2,7 +2,9 @@
     Page Todos list (also by listId: {{list.id}})
 </h1>
 
-
+<h2>
+    {{list.name}}
+</h2>
 
 {{#if errors}}
     {{#each errors}}
@@ -24,25 +26,12 @@
 
 {{#if todos}}
 
-<h1>
-    {{list.name}}
-</h1>
-
-{{> newtodo}}
-
-<ul class="list-group list-group-flush" id="todos"> 
+<ul>
     {{!-- HELPER hi handlebars --}}
     {{#each todos}}
-        <li class="list-group-item" id="li-{{this.id}}">
-            <div class="form-check">
-                {{!-- <input type="checkbox" class="form-check-input" value="" id="defaultCheck1"> --}}
-                <button class="btn btn-default">
-                    <span id="spn-{{this.id}}" class="fa {{#if this.completed}} fa-check {{else}} fa-square-o {{/if}}" completed="{{this.completed}}"></span ></span>
-                </button>
-                <label class="form-check-label" for="defaultCheck1">
-                    {{this.todo}}
-                </label>
-            </div>
+        <li>
+            
+            {{this.todo}}
             
         </li>        
     {{/each}}
@@ -55,59 +44,3 @@
         
     </h5>
 {{/if}}
-
-
-<script>
-
-    async function completeTodo(id, completed){
-        try{
-            
-            if(completed == true || completed == "true" || completed === true || completed === "true"){
-                completed = 1;
-            }
-            else  if(completed == false || completed == "false" || completed === false || completed === "false"){
-                completed = 0;
-            }
-            console.log("func click: ", completed, id)
-            const res = await axios.patch('/api/todos/'+id,
-                {
-                    completed: !completed
-                }
-            );
-
-            Swal.fire({
-                type: 'success',
-                text: 'Todo successfully completed!'
-            })
-            .then(() =>{location.href ='/'});
-        
-        }
-        catch(e){
-            Swal.fire({
-                type: 'error',
-                text: e.response.data.message
-            })
-        }
-    }
-
-    document.addEventListener("DOMContentLoaded", ()=>{
-        const ul = document.querySelector('#todos');
-        if(ul){
-            ul.addEventListener('click', (evt)=>{
-                // {{!-- Nome del node --}}
-                //evt.target.nodeName
-
-                // id dell'elemento => + '' converte in stringa
-                const eleId = evt.target.id + '';
-                // startsWith: inizia con un determinato testo
-                if(eleId.startsWith('spn-')){
-                    // *1 => converte in numero
-                    const id = eleId.replace('spn-', '')*1;
-                    const completed = evt.target.getAttribute('completed');
-
-                    completeTodo(id, completed);
-                }
-            })
-        }
-    })
-</script>

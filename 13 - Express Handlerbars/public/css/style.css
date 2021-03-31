@@ -2,12 +2,3 @@
 .alert {
     transition: opacity 4s;
 }
-
-.footer {
-    background-color: #f5f5ff;
-}
-
-.footer > .container {
-    padding-right: 15px;
-    padding-left: 15px;
-}
