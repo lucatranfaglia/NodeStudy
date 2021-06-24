@@ -6,14 +6,9 @@
     {{list.name}}
 </h2>
 
-{{#if errors}}
-    {{#each errors}}
-        <div class="alert alert-danger">
-            {{this}}            
-        </div>        
-    {{/each}}
-{{/if}}
 
+
+{{!-- MESSAGE --}}
 {{#if messages}}
     {{#each messages}}
         <div class="alert alert-success">
@@ -23,24 +18,42 @@
     {{/each}}
 {{/if}}
 
+{{!-- ERROR --}}
+{{#if errors}}
+    {{#each errors}}
+        <div class="alert alert-danger">
+            {{this}}            
+        </div>        
+    {{/each}}
+{{/if}}
 
+{{!-- NEW TODO --}}
+{{> newtodo this}}
+
+{{!-- TODOS --}}
 {{#if todos}}
 
-<ul>
     {{!-- HELPER hi handlebars --}}
-    {{#each todos}}
-        <li>
-            
-            {{this.todo}}
-            
-        </li>        
-    {{/each}}
-</ul>
+    <ul class="list-group list-group-flush" id="todos">
+        {{#each todos}}
+            <li class="list-group-item"  id="li-{{this.todo}}">
+                <div class="form-check">
+                    <button class="btn btn-default">
+                        <span completed = "{{this.completed}}" id="spn-{{this.id}}" class="fa {{#if this.completed}}fa-check {{else}} fa-square-o {{/if}}">
 
+                        </span>
+                    </button>
+                    <label class="form-check-label" for="defaultCheck1">
+                        {{this.todo}}
+                    </label>
+
+                </div>
+
+
+            </li>
+
+        {{/each}}
+    </ul>
 {{else}}
-    <h5>
-    
-        No todos found
-        
-    </h5>
+     <h2 class="text-danger">No todos found!</h2>
 {{/if}}

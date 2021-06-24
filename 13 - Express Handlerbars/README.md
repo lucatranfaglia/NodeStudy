@@ -228,3 +228,7 @@ Inserisco flash nella request
 # JAVASCRIPT 
 
     <button class="btn btn-danger" title="DELETE LIST" onclick="return confirm('Are you sure you want to delete this items?')">
+
+
+# HELPERS handlebars-helpers
+comando Compare permette a handlebars di fare le comparazioni
